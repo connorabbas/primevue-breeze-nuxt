@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  primevue_breeze_nuxt:
+    build: .
+    container_name: primevue_breeze_nuxt
+    entrypoint: /bin/sh
+    working_dir: /srv/app
+    volumes:
+      - type: bind
+        source: ./
+        target: /srv/app
+    tty: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.primevue_breeze_nuxt.rule=Host(`nuxt.breeze-api.localhost`)"
+      - "traefik.http.services.primevue_breeze_nuxt.loadbalancer.server.port=${TRAEFIK_PORT}"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: "traefik_network"
