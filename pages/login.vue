@@ -21,26 +21,20 @@ const form = reactive({
     remember: false,
 });
 
-const { status: gatheringXsrf, execute: getXsrf } = useLaravelApiFetch('/sanctum/csrf-cookie', {
+const { status: getXsrfStatus, execute: getXsrf } = useLaravelApiFetch('/sanctum/csrf-cookie', {
     immediate: false,
     watch: false,
-    credentials: 'include',
 });
-const { status: attemptingLogin, execute: attemptLogin } = useLaravelApiFetch('/login', {
+const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch('/login', {
     immediate: false,
     watch: false,
-    credentials: 'include',
-    headers: {
-        accept: 'application/json',
-        'X-XSRF-TOKEN': useCookie('XSRF-TOKEN'),
-    },
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {
         console.log('Login Response:', response);
         if (response.status === 422) {
             validationErrors.value = response._data.errors;
-        } else if (response.ok && response.status === 204) {
+        } else if (response.ok && response.status >= 200 && response.status < 300) {
             // TODO: Redirect to intended page or dashboard
             navigateTo({ name: 'dashboard' });
         } else {
@@ -59,7 +53,7 @@ async function handleLogin() {
 }
 
 const loggingIn = computed(() => {
-    return gatheringXsrf.value == 'pending' || attemptingLogin.value == 'pending';
+    return getXsrfStatus.value == 'pending' || attemptLoginStatus.value == 'pending';
 });
 
 onMounted(() => {

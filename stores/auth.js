@@ -8,52 +8,29 @@ export const useAuthStore = defineStore('auth', () => {
     const mustVerifyEmail = false;
     const user = ref(null);
 
-    function loginRedirect() {
-        // TODO: intended redirect
-        navigateTo({ name: 'dashboard' });
-    }
-    function getUserError() {
-        user.value = null;
-        toast.removeAllGroups(); // prevent multiple of the same toast from popping up
-        toast.add({
-            severity: 'error',
-            summary: 'Authentication Error',
-            detail: 'Unable to reach the authentication server, please try again later.',
-            life: 3000,
-        });
-    }
-    function getUser() {
-        return axios
-            .get('/api/user')
-            .then((response) => {
-                if (
-                    response.status >= 200 &&
-                    response.status < 300 &&
-                    response.data?.id &&
-                    response.data?.name &&
-                    response.data?.email
-                ) {
-                    user.value = response.data;
-                } else {
-                    getUserError();
-                }
-            })
-            .catch((error) => {
-                if (error.response && error.response.status == 401) {
-                    // endpoint is fine, user is unauthorized
-                    user.value = null;
-                } else {
-                    getUserError();
-                }
-            });
-    }
+    const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
+        immediate: false,
+        watch: false,
+        onResponse({ request, response, options }) {
+            if (response.ok && response.status >= 200 && response.status < 300) {
+                user.value = response._data;
+            } else if (response.status == 401) {
+                // endpoint is fine, user is unauthorized
+                user.value = null;
+            } else {
+                user.value = null;
+                toast.removeAllGroups(); // prevent multiple of the same toast from popping up
+                toast.add({
+                    severity: 'error',
+                    summary: 'Authentication Error',
+                    detail: 'Unable to reach the authentication server, please try again later.',
+                    life: 3000,
+                });
+            }
+        },
+    });
     function getCsrfCookie() {
         return axios.get('/sanctum/csrf-cookie');
-    }
-    function register(formData) {
-        return getCsrfCookie().then(() => {
-            return axios.post('/register', formData);
-        });
     }
     function requestPasswordResetLink(formData) {
         return getCsrfCookie().then(() => {
@@ -72,6 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
     function logout() {
         return axios.post('/logout').then((response) => {
+            console.log(response);
             user.value = null;
             navigateTo('/');
         });
@@ -82,11 +60,9 @@ export const useAuthStore = defineStore('auth', () => {
         user,
         getUser,
         getCsrfCookie,
-        loginRedirect,
         requestPasswordResetLink,
         resetPassword,
         sendVerificationEmail,
-        register,
         logout,
     };
 });

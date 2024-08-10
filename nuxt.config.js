@@ -2,12 +2,12 @@ import customizedThemePreset from './theme-preset.mjs';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    //ssr: false,
+    ssr: false,
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
     devServer: {
-        port: process.env.NUXT_DEV_PORT || 3000,
+        port: process.env.NUXT_DEV_SERVER_PORT || 3000,
     },
     runtimeConfig: {
         public: {

@@ -2,7 +2,7 @@
 import { useAuthStore } from '~/stores/auth';
 
 const authStore = useAuthStore();
-authStore.getUser();
+await authStore.getUser();
 </script>
 
 <template>

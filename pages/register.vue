@@ -1,6 +1,5 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useAuthStore } from '~/stores/auth';
 
 useHead({
     title: 'Register',
@@ -11,47 +10,55 @@ definePageMeta({
 });
 
 const toast = useToast();
-const authStore = useAuthStore();
-const { errors, handleAxiosError, clearErrors } = useErrorHandling();
 
 const nameInput = ref();
 
+const validationErrors = ref({});
 const form = reactive({
-    processing: false,
-    data: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-    },
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
 });
 
-const submit = () => {
-    form.processing = true;
-    authStore
-        .register(form.data)
-        .then((response) => {
-            clearErrors();
-            authStore.loginRedirect();
-        })
-        .catch((error) => {
-            handleAxiosError(error);
-            if (errors.critical || errors.other) {
-                toast.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'An unexpected error occurred, please try again later.',
-                    life: 3000,
-                });
-            }
-        })
-        .finally(() => {
-            form.processing = false;
-        });
+const { status: getXsrfStatus, execute: getXsrf } = useLaravelApiFetch('/sanctum/csrf-cookie', {
+    immediate: false,
+    watch: false,
+});
+const { status: attemptRegistrationStatus, execute: attemptRegistration } = useLaravelApiFetch('/register', {
+    immediate: false,
+    watch: false,
+    method: 'POST',
+    body: form,
+    onResponse({ request, response, options }) {
+        console.log('Login Response:', response);
+        if (response.status === 422) {
+            validationErrors.value = response._data.errors;
+        } else if (response.ok && response.status >= 200 && response.status < 300) {
+            // TODO: Redirect to intended page or dashboard
+            navigateTo({ name: 'dashboard' });
+        } else {
+            toast.add({
+                severity: 'error',
+                summary: 'Login Failed',
+                detail: 'Unable to reach the authentication server, please try again later.',
+                life: 3000,
+            });
+        }
+    },
+});
+async function handleRegister() {
+    await getXsrf();
+    await attemptRegistration();
 }
 
+const registering = computed(() => {
+    return getXsrfStatus.value == 'pending' || attemptRegistrationStatus.value == 'pending';
+});
+
 onMounted(() => {
-    nameInput.value.$el.focus();
+    // TODO: fix causing validation issues
+    //nameInput.value.$el.focus();
 });
 </script>
 
@@ -59,7 +66,7 @@ onMounted(() => {
     <div>
         <NuxtLayout name="guest">
             <template #content>
-                <form @submit.prevent="submit">
+                <form @submit.prevent="handleRegister">
                     <div class="mb-6">
                         <label
                             for="name"
@@ -70,15 +77,15 @@ onMounted(() => {
                             ref="nameInput"
                             id="name"
                             type="text"
-                            v-model="form.data.name"
+                            v-model="form.name"
                             class="w-full"
-                            :invalid="Boolean(errors.validation?.name)"
+                            :invalid="Boolean(validationErrors?.name)"
                             required
                             autocomplete="name"
                         />
                         <InputErrors
                             class="mt-2"
-                            :errors="errors.validation?.name"
+                            :errors="validationErrors?.name"
                         />
                     </div>
                     <div class="mb-6">
@@ -90,15 +97,15 @@ onMounted(() => {
                         <InputText
                             id="email"
                             type="email"
-                            v-model="form.data.email"
+                            v-model="form.email"
                             class="w-full"
-                            :invalid="Boolean(errors.validation?.email)"
+                            :invalid="Boolean(validationErrors?.email)"
                             required
                             autocomplete="username"
                         />
                         <InputErrors
                             class="mt-2"
-                            :errors="errors.validation?.email"
+                            :errors="validationErrors?.email"
                         />
                     </div>
                     <div class="mb-6">
@@ -110,15 +117,15 @@ onMounted(() => {
                         <InputText
                             id="password"
                             type="password"
-                            v-model="form.data.password"
+                            v-model="form.password"
                             class="w-full"
-                            :invalid="Boolean(errors.validation?.password)"
+                            :invalid="Boolean(validationErrors?.password)"
                             required
                             autocomplete="new-password"
                         />
                         <InputErrors
                             class="mt-2"
-                            :errors="errors.validation?.password"
+                            :errors="validationErrors?.password"
                         />
                     </div>
                     <div class="mb-6">
@@ -130,15 +137,15 @@ onMounted(() => {
                         <InputText
                             id="password_confirmation"
                             type="password"
-                            v-model="form.data.password_confirmation"
+                            v-model="form.password_confirmation"
                             class="w-full"
-                            :invalid="Boolean(errors.validation?.password_confirmation)"
+                            :invalid="Boolean(validationErrors?.password_confirmation)"
                             required
                             autocomplete="new-password"
                         />
                         <InputErrors
                             class="mt-2"
-                            :errors="errors.validation?.password_confirmation"
+                            :errors="validationErrors?.password_confirmation"
                         />
                     </div>
                     <div class="flex justify-end items-center">
@@ -151,7 +158,7 @@ onMounted(() => {
                         <Button
                             raised
                             type="submit"
-                            :loading="form.processing"
+                            :loading="registering"
                             label="Register"
                             severity="contrast"
                         />
