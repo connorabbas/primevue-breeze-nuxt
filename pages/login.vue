@@ -1,14 +1,13 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useErrorHandling } from '~/composables/useErrorHandling';
 import { useAuthStore } from '~/stores/auth';
-import { useFlashMessage } from '~/composables/useFlashMessage.js';
 
 useHead({
     title: 'Login',
 });
 definePageMeta({
     middleware: 'guest',
+    layout: false,
 });
 
 const toast = useToast();

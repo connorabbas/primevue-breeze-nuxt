@@ -6,5 +6,4 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (authStore.user) {
         return navigateTo('/dashboard');
     }
-    return;
 });

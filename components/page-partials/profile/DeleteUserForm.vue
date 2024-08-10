@@ -1,5 +1,4 @@
 <script setup>
-import { useErrorHandling } from '~/composables/useErrorHandling';
 import InputErrors from '~/components/InputErrors.vue';
 
 const { errors, handleAxiosError, clearErrors, hasNoErrors } = useErrorHandling();

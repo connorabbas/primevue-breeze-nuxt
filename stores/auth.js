@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { useToast } from 'primevue/usetoast';
-import { useFlashMessage } from '~/composables/useFlashMessage.js';
 
 export const useAuthStore = defineStore('auth', () => {
     const toast = useToast();

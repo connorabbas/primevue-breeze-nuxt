@@ -1,6 +1,5 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useErrorHandling } from '~/composables/useErrorHandling';
 import { useAuthStore } from '~/stores/auth';
 
 useHead({
@@ -8,6 +7,7 @@ useHead({
 });
 definePageMeta({
     middleware: 'guest',
+    layout: false,
 });
 
 const toast = useToast();

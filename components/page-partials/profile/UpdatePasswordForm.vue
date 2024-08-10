@@ -1,6 +1,5 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useErrorHandling } from '~/composables/useErrorHandling';
 import { useAuthStore } from '~/stores/auth';
 
 const toast = useToast();
