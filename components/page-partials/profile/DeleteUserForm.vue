@@ -1,30 +1,25 @@
 <script setup>
 import InputErrors from '~/components/InputErrors.vue';
 
-const { errors, handleAxiosError, clearErrors, hasNoErrors } = useErrorHandling();
-
 const passwordInput = ref(null);
 const modalOpen = ref(false);
 
 const form = reactive({
-    processing: false,
-    data: {
-        password: '',
-    },
+    password: '',
 });
 
-const deleteUser = () => {
+function deleteUser() {
     // Breeze API installation does not include profile related routes/functionality, implement as needed...
     modalOpen.value = false;
-};
+}
 
 watch(modalOpen, (newModalOpen) => {
     if (newModalOpen) {
         nextTick(() => {
-            passwordInput.value.$el.focus();
+            if (passwordInput.value?.$el) {
+                passwordInput.value.$el.focus();
+            }
         });
-    } else {
-        clearErrors();
     }
 });
 </script>
@@ -52,15 +47,15 @@ watch(modalOpen, (newModalOpen) => {
                     ref="passwordInput"
                     type="password"
                     placeholder="Password"
-                    v-model="form.data.password"
+                    v-model="form.password"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.password)"
+                    :invalid="false"
                     autocomplete="current-password"
                     @keyup.enter="deleteUser"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.password"
+                    :errors="[]"
                 />
             </div>
 
@@ -75,7 +70,7 @@ watch(modalOpen, (newModalOpen) => {
                 <Button
                     raised
                     @click="deleteUser"
-                    :loading="form.processing"
+                    :loading="false"
                     label="Delete Account"
                     severity="danger"
                 />

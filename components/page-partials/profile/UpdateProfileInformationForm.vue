@@ -4,22 +4,16 @@ import { useAuthStore } from '~/stores/auth';
 
 const toast = useToast();
 const authStore = useAuthStore();
-const { errors, handleAxiosError, clearErrors, hasNoErrors } = useErrorHandling();
 const { flashMessages } = useFlashMessage();
 
 const nameInput = ref();
 
-const verificationLinkSent = computed(() => flashMessages.success === 'verification-link-sent');
-
 const form = reactive({
-    processing: false,
-    data: {
-        name: '',
-        email: '',
-    },
+    name: authStore.user.name || '',
+    email: authStore.user.email || '',
 });
 
-const updateProfileInformation = () => {
+function updateProfileInformation() {
     // Breeze API installation does not include profile related routes/functionality, implement as needed...
     toast.add({
         severity: 'success',
@@ -29,7 +23,8 @@ const updateProfileInformation = () => {
     });
 };
 const resendVerifyEmail = () => {
-    authStore.sendVerificationEmail().catch((error) => {
+    // TODO
+    /* authStore.sendVerificationEmail().catch((error) => {
         handleAxiosError(error);
         if (errors.critical || errors.other) {
             toast.add({
@@ -39,11 +34,15 @@ const resendVerifyEmail = () => {
                 life: 3000,
             });
         }
-    });
+    }); */
 };
 
+const verificationLinkSent = computed(() => flashMessages.success === 'verification-link-sent');
+
 onMounted(() => {
-    nameInput.value.$el.focus();
+    if (nameInput.value?.$el) {
+        nameInput.value.$el.focus();
+    }
 });
 </script>
 
@@ -71,12 +70,12 @@ onMounted(() => {
                     type="text"
                     v-model="form.name"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.name)"
+                    :invalid="false"
                     autocomplete="name"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.name"
+                    :errors="[]"
                 />
             </div>
             <div>
@@ -91,12 +90,12 @@ onMounted(() => {
                     type="email"
                     v-model="form.email"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.email)"
+                    :invalid="false"
                     autocomplete="username"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.email"
+                    :errors="[]"
                 />
             </div>
 
@@ -126,7 +125,7 @@ onMounted(() => {
                 <Button
                     raised
                     type="submit"
-                    :loading="form.processing"
+                    :loading="false"
                     label="Save"
                     severity="contrast"
                 />
@@ -138,7 +137,7 @@ onMounted(() => {
                     leave-to-class="opacity-0"
                 >
                     <p
-                        v-if="form.recentlySuccessful"
+                        v-if="false"
                         class="text-sm text-muted-color"
                     >
                         Saved.

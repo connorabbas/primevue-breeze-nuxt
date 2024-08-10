@@ -1,24 +1,15 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useAuthStore } from '~/stores/auth';
 
 const toast = useToast();
-const authStore = useAuthStore();
-const { errors, handleAxiosError, clearErrors, hasNoErrors } = useErrorHandling();
-
-const currentPasswordInput = ref(null);
-const passwordInput = ref(null);
 
 const form = reactive({
-    processing: false,
-    data: {
-        current_password: '',
-        password: '',
-        password_confirmation: '',
-    },
+    current_password: '',
+    password: '',
+    password_confirmation: '',
 });
 
-const updatePassword = () => {
+function updatePassword() {
     // Breeze API installation does not include profile related routes/functionality, implement as needed...
     toast.add({
         severity: 'success',
@@ -53,14 +44,14 @@ const updatePassword = () => {
                     id="current_password"
                     ref="currentPasswordInput"
                     type="password"
-                    v-model="form.data.current_password"
+                    v-model="form.current_password"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.current_password)"
+                    :invalid="false"
                     autocomplete="current-password"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.current_password"
+                    :errors="[]"
                 />
             </div>
 
@@ -75,14 +66,14 @@ const updatePassword = () => {
                     id="password"
                     ref="passwordInput"
                     type="password"
-                    v-model="form.data.password"
+                    v-model="form.password"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.password)"
+                    :invalid="false"
                     autocomplete="new-password"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.password"
+                    :errors="[]"
                 />
             </div>
 
@@ -96,14 +87,14 @@ const updatePassword = () => {
                     required
                     id="password_confirmation"
                     type="password"
-                    v-model="form.data.password_confirmation"
+                    v-model="form.password_confirmation"
                     class="w-full"
-                    :invalid="Boolean(errors.validation?.password_confirmation)"
+                    :invalid="false"
                     autocomplete="new-password"
                 />
                 <InputErrors
                     class="mt-2"
-                    :errors="errors.validation?.password_confirmation"
+                    :errors="[]"
                 />
             </div>
 
@@ -111,7 +102,7 @@ const updatePassword = () => {
                 <Button
                     raised
                     type="submit"
-                    :loading="form.processing"
+                    :loading="false"
                     label="Save"
                     severity="contrast"
                 />
@@ -123,7 +114,7 @@ const updatePassword = () => {
                     leave-to-class="opacity-0"
                 >
                     <p
-                        v-if="form.recentlySuccessful"
+                        v-if="false"
                         class="text-sm text-muted-color"
                     >
                         Saved.
