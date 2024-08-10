@@ -1,4 +1,5 @@
 <script setup>
+import { useAuthStore } from '~/stores/auth';
 import { useToast } from 'primevue/usetoast';
 
 useHead({
@@ -10,6 +11,7 @@ definePageMeta({
 });
 
 const toast = useToast();
+const authStore = useAuthStore();
 
 const nameInput = ref();
 
@@ -21,10 +23,6 @@ const form = reactive({
     password_confirmation: '',
 });
 
-const { status: getXsrfStatus, execute: getXsrf } = useLaravelApiFetch('/sanctum/csrf-cookie', {
-    immediate: false,
-    watch: false,
-});
 const { status: attemptRegistrationStatus, execute: attemptRegistration } = useLaravelApiFetch('/register', {
     immediate: false,
     watch: false,
@@ -49,12 +47,12 @@ const { status: attemptRegistrationStatus, execute: attemptRegistration } = useL
     },
 });
 async function handleRegister() {
-    await getXsrf();
+    await authStore.getXsrfCookie();
     await attemptRegistration();
 }
 
 const registering = computed(() => {
-    return getXsrfStatus.value == 'pending' || attemptRegistrationStatus.value == 'pending';
+    return authStore.getXsrfCookieStatus.value == 'pending' || attemptRegistrationStatus.value == 'pending';
 });
 
 onMounted(() => {

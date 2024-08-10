@@ -19,6 +19,10 @@ export const useAuthStore = defineStore('auth', () => {
         });
     }
 
+    const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useLaravelApiFetch('/sanctum/csrf-cookie', {
+        immediate: false,
+        watch: false,
+    });
     const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
         immediate: false,
         watch: false,
@@ -76,6 +80,8 @@ export const useAuthStore = defineStore('auth', () => {
         mustVerifyEmail,
         user,
         getUser,
+        getXsrfCookie,
+        getXsrfCookieStatus,
         getCsrfCookie,
         requestPasswordResetLink,
         resetPassword,
