@@ -70,7 +70,7 @@ async function logout() {
                             <div class="shrink-0 flex items-center">
                                 <NuxtLink to="/">
                                     <ApplicationLogo
-                                        class="block h-10 w-auto fill-current text-surface-900 dark:text-surface-0"
+                                        class="block w-auto h-5 fill-current text-surface-900 dark:text-surface-0"
                                     />
                                 </NuxtLink>
                             </div>

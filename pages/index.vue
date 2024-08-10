@@ -11,7 +11,7 @@ await authStore.getUser();
             <ResponsiveCard spacing-classes="p-4 py-6 sm:p-12">
                 <div class="text-center md:text-left">
                     <section>
-                        <span class="block text-6xl font-bold mb-1 text-indigo-500">Laravel Breeze</span>
+                        <span class="block text-6xl font-bold mb-1 text-indigo-400">Laravel Breeze</span>
                         <div class="text-6xl font-bold mb-1">PrimeVue</div>
                         <div class="text-6xl text-green-400 text-emerald font-bold mb-4"> & Nuxt</div>
                         <p class="mt-0 mb-2 text-muted-color leading-normal">

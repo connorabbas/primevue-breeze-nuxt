@@ -10,7 +10,7 @@ defineProps({
     <div v-if="errors">
         <p
             v-for="errorMessage in errors"
-            class="m-0 mb-1 text-sm text-red-500 dark:text-red-300"
+            class="m-0 mb-1 text-sm text-red-400 dark:text-red-300"
         >
             {{ errorMessage }}
         </p>
