@@ -8,25 +8,49 @@ export const useAuthStore = defineStore('auth', () => {
     const mustVerifyEmail = false;
     const user = ref(null);
 
+    function triggerAuthServerErrorToast(summary = 'Authentication Error') {
+        user.value = null;
+        toast.removeAllGroups(); // prevent multiple of the same toast from popping up
+        toast.add({
+            severity: 'error',
+            summary: summary,
+            detail: 'Unable to reach the authentication server, please try again later.',
+            life: 3000,
+        });
+    }
+
     const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
         immediate: false,
         watch: false,
+        onRequestError({ request, options, error }) {
+            triggerAuthServerErrorToast();
+        },
         onResponse({ request, response, options }) {
-            if (response.ok && response.status >= 200 && response.status < 300) {
+            if (response.ok) {
                 user.value = response._data;
-            } else if (response.status == 401) {
+            }
+        },
+        onResponseError({ request, response, options }) {
+            if (response.status == 401) {
                 // endpoint is fine, user is unauthorized
                 user.value = null;
             } else {
-                user.value = null;
-                toast.removeAllGroups(); // prevent multiple of the same toast from popping up
-                toast.add({
-                    severity: 'error',
-                    summary: 'Authentication Error',
-                    detail: 'Unable to reach the authentication server, please try again later.',
-                    life: 3000,
-                });
+                triggerAuthServerErrorToast();
             }
+        },
+    });
+    const { status: logoutStatus, execute: logout } = useLaravelApiFetch('/logout', {
+        immediate: false,
+        watch: false,
+        method: 'POST',
+        onResponse({ request, response, options }) {
+            if (response.ok) {
+                user.value = null;
+                navigateTo({ name: 'index' });
+            }
+        },
+        onResponseError({ request, response, options }) {
+            triggerAuthServerErrorToast('Logout Error');
         },
     });
     function getCsrfCookie() {
@@ -45,13 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
     function sendVerificationEmail() {
         return axios.post('/email/verification-notification').then((response) => {
             setFlashMessage('success', response.data.status);
-        });
-    }
-    function logout() {
-        return axios.post('/logout').then((response) => {
-            console.log(response);
-            user.value = null;
-            navigateTo('/');
         });
     }
 

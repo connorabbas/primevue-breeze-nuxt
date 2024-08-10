@@ -31,16 +31,18 @@ const { status: attemptRegistrationStatus, execute: attemptRegistration } = useL
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {
-        console.log('Login Response:', response);
-        if (response.status === 422) {
-            validationErrors.value = response._data.errors;
-        } else if (response.ok && response.status >= 200 && response.status < 300) {
+        if (response.ok) {
             // TODO: Redirect to intended page or dashboard
             navigateTo({ name: 'dashboard' });
+        }
+    },
+    onResponseError({ request, response, options }) {
+        if (response.status === 422) {
+            validationErrors.value = response._data.errors;
         } else {
             toast.add({
                 severity: 'error',
-                summary: 'Login Failed',
+                summary: 'Registration Failed',
                 detail: 'Unable to reach the authentication server, please try again later.',
                 life: 3000,
             });
@@ -57,8 +59,9 @@ const registering = computed(() => {
 });
 
 onMounted(() => {
-    // TODO: fix causing validation issues
-    //nameInput.value.$el.focus();
+    if (nameInput.value?.$el) {
+        nameInput.value.$el.focus();
+    }
 });
 </script>
 

@@ -16,7 +16,7 @@ const userMenuItems = [
     {
         label: 'Log Out',
         icon: 'pi pi-fw pi-sign-out',
-        command: () => authStore.logout(),
+        command: () => logout(),
     },
 ];
 const toggleUserMenu = (event) => {
@@ -44,6 +44,10 @@ if (import.meta.client) {
             mobileMenuOpen.value = false;
         }
     });
+}
+
+async function logout() {
+    await authStore.logout();
 }
 </script>
 
@@ -195,7 +199,7 @@ if (import.meta.client) {
                             </div>
                             <div class="grow">
                                 <Button
-                                    @click="authStore.logout()"
+                                    @click="logout()"
                                     label="Logout"
                                     icon="pi pi-sign-out"
                                     class="w-full"

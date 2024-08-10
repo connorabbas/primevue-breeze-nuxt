@@ -31,12 +31,14 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {
-        console.log('Login Response:', response);
-        if (response.status === 422) {
-            validationErrors.value = response._data.errors;
-        } else if (response.ok && response.status >= 200 && response.status < 300) {
+        if (response.ok) {
             // TODO: Redirect to intended page or dashboard
             navigateTo({ name: 'dashboard' });
+        }
+    },
+    onResponseError({ request, response, options }) {
+        if (response.status === 422) {
+            validationErrors.value = response._data.errors;
         } else {
             toast.add({
                 severity: 'error',
@@ -57,8 +59,9 @@ const loggingIn = computed(() => {
 });
 
 onMounted(() => {
-    // TODO: fix causing validation issues
-    //emailInput.value.$el.focus();
+    if (emailInput.value?.$el) {
+        emailInput.value.$el.focus();
+    }
 });
 </script>
 
