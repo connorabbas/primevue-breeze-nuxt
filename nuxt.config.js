@@ -7,7 +7,12 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
     devServer: {
-        port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+        port: process.env.NUXT_DEV_PORT || 3000,
+    },
+    runtimeConfig: {
+        public: {
+            laravelApiBase: process.env.NUXT_PUBLIC_LARAVEL_API_BASE_URL,
+        },
     },
     app: {
         head: {

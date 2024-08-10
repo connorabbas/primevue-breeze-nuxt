@@ -22,6 +22,9 @@ const userMenuItems = [
 const toggleUserMenu = (event) => {
     userMenu.value.toggle(event);
 };
+const userName = computed(() => {
+    return authStore?.user?.name ?? 'User';
+});
 
 // Mobile menu (Drawer)
 const mobileMenuOpen = ref(false);
@@ -127,7 +130,7 @@ if (import.meta.client) {
                                     severity="secondary"
                                     @click="toggleUserMenu($event)"
                                 >
-                                    <span>{{ authStore?.user?.name }}</span>
+                                    <span>{{ userName }}</span>
                                     <i class="pi pi-angle-down ml-1"></i>
                                 </Button>
                             </div>

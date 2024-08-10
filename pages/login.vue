@@ -1,6 +1,5 @@
 <script setup>
 import { useToast } from 'primevue/usetoast';
-import { useAuthStore } from '~/stores/auth';
 
 useHead({
     title: 'Login',
@@ -11,137 +10,152 @@ definePageMeta({
 });
 
 const toast = useToast();
-const authStore = useAuthStore();
-const { errors, handleAxiosError, clearErrors } = useErrorHandling();
 const { flashMessages } = useFlashMessage();
 
 const emailInput = ref();
 
+const validationErrors = ref({});
 const form = reactive({
-    processing: false,
-    data: {
-        email: '',
-        password: '',
-        remember: false,
-    },
+    email: '',
+    password: '',
+    remember: false,
 });
 
-const submit = () => {
-    form.processing = true;
-    authStore
-        .login(form.data)
-        .then((response) => {
-            clearErrors();
-            authStore.loginRedirect();
-        })
-        .catch((error) => {
-            handleAxiosError(error);
-            if (errors.critical || errors.other) {
-                toast.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'An unexpected error occurred, please try again later.',
-                    life: 3000,
-                });
-            }
-        })
-        .finally(() => {
-            form.processing = false;
-        });
-};
+const { status: gatheringXsrf, execute: getXsrf } = useLaravelApiFetch('/sanctum/csrf-cookie', {
+    immediate: false,
+    watch: false,
+    credentials: 'include',
+});
+const { status: attemptingLogin, execute: attemptLogin } = useLaravelApiFetch('/login', {
+    immediate: false,
+    watch: false,
+    credentials: 'include',
+    headers: {
+        accept: 'application/json',
+        'X-XSRF-TOKEN': useCookie('XSRF-TOKEN'),
+    },
+    method: 'POST',
+    body: form,
+    onResponse({ request, response, options }) {
+        console.log('Login Response:', response);
+        if (response.status === 422) {
+            validationErrors.value = response._data.errors;
+        } else if (response.ok && response.status === 204) {
+            // TODO: Redirect to intended page or dashboard
+            navigateTo({ name: 'dashboard' });
+        } else {
+            toast.add({
+                severity: 'error',
+                summary: 'Login Failed',
+                detail: 'Unable to reach the authentication server, please try again later.',
+                life: 3000,
+            });
+        }
+    },
+});
+async function handleLogin() {
+    await getXsrf();
+    await attemptLogin();
+}
+
+const loggingIn = computed(() => {
+    return gatheringXsrf.value == 'pending' || attemptingLogin.value == 'pending';
+});
 
 onMounted(() => {
-    emailInput.value.$el.focus();
+    // TODO: fix causing validation issues
+    //emailInput.value.$el.focus();
 });
 </script>
 
 <template>
-    <NuxtLayout name="guest">
-        <template
-            #message
-            v-if="flashMessages.success"
-        >
-            <Message
-                severity="success"
-                :closable="false"
-                class="shadow"
+    <div>
+        <NuxtLayout name="guest">
+            <template
+                #message
+                v-if="flashMessages.success"
             >
-                {{ flashMessages.success }}
-            </Message>
-        </template>
-
-        <template #content>
-            <form @submit.prevent="submit">
-                <div class="mb-6">
-                    <label
-                        for="email"
-                        class="block mb-2"
-                        >Email</label
-                    >
-                    <InputText
-                        required
-                        ref="emailInput"
-                        id="email"
-                        type="email"
-                        v-model="form.data.email"
-                        class="w-full"
-                        :invalid="Boolean(errors.validation?.email)"
-                        autocomplete="username"
-                    />
-                    <InputErrors
-                        class="mt-2"
-                        :errors="errors.validation?.email"
-                    />
-                </div>
-                <div class="mb-6">
-                    <label
-                        for="password"
-                        class="block mb-2"
-                        >Password</label
-                    >
-                    <InputText
-                        required
-                        id="password"
-                        type="password"
-                        v-model="form.data.password"
-                        class="w-full"
-                        :invalid="Boolean(errors.validation?.password)"
-                        autocomplete="current-password"
-                    />
-                    <InputErrors
-                        class="mt-2"
-                        :errors="errors.validation?.password"
-                    />
-                </div>
-                <div class="mb-8">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <Checkbox
-                                id="remember"
-                                :binary="true"
-                                v-model="form.remember"
-                                class="mr-2"
-                            ></Checkbox>
-                            <label for="remember">Remember me</label>
+                <Message
+                    severity="success"
+                    :closable="false"
+                    class="shadow"
+                >
+                    {{ flashMessages.success }}
+                </Message>
+            </template>
+            <template #content>
+                <form @submit.prevent="handleLogin">
+                    <div class="mb-6">
+                        <label
+                            for="email"
+                            class="block mb-2"
+                            >Email</label
+                        >
+                        <InputText
+                            required
+                            ref="emailInput"
+                            id="email"
+                            type="email"
+                            v-model="form.email"
+                            class="w-full"
+                            :invalid="Boolean(validationErrors?.email)"
+                            autocomplete="username"
+                        />
+                        <InputErrors
+                            class="mt-2"
+                            :errors="validationErrors?.email"
+                        />
+                    </div>
+                    <div class="mb-6">
+                        <label
+                            for="password"
+                            class="block mb-2"
+                            >Password</label
+                        >
+                        <InputText
+                            required
+                            id="password"
+                            type="password"
+                            v-model="form.password"
+                            class="w-full"
+                            :invalid="Boolean(validationErrors?.password)"
+                            autocomplete="current-password"
+                        />
+                        <InputErrors
+                            class="mt-2"
+                            :errors="validationErrors?.password"
+                        />
+                    </div>
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <Checkbox
+                                    id="remember"
+                                    :binary="true"
+                                    v-model="form.remember"
+                                    class="mr-2"
+                                ></Checkbox>
+                                <label for="remember">Remember me</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex justify-end items-center">
-                    <NuxtLink
-                        :to="{ name: 'forgot-password' }"
-                        class="mr-4 underline text-muted-color hover:text-color"
-                    >
-                        Forgot your password?
-                    </NuxtLink>
-                    <Button
-                        raised
-                        type="submit"
-                        :loading="form.processing"
-                        label="Log In"
-                        severity="contrast"
-                    />
-                </div>
-            </form>
-        </template>
-    </NuxtLayout>
+                    <div class="flex justify-end items-center">
+                        <NuxtLink
+                            :to="{ name: 'forgot-password' }"
+                            class="mr-4 underline text-muted-color hover:text-color"
+                        >
+                            Forgot your password?
+                        </NuxtLink>
+                        <Button
+                            raised
+                            type="submit"
+                            :loading="loggingIn"
+                            label="Log In"
+                            severity="contrast"
+                        />
+                    </div>
+                </form>
+            </template>
+        </NuxtLayout>
+    </div>
 </template>

@@ -50,11 +50,6 @@ export const useAuthStore = defineStore('auth', () => {
     function getCsrfCookie() {
         return axios.get('/sanctum/csrf-cookie');
     }
-    function login(formData) {
-        return getCsrfCookie().then(() => {
-            return axios.post('/login', formData);
-        });
-    }
     function register(formData) {
         return getCsrfCookie().then(() => {
             return axios.post('/register', formData);
@@ -91,7 +86,6 @@ export const useAuthStore = defineStore('auth', () => {
         requestPasswordResetLink,
         resetPassword,
         sendVerificationEmail,
-        login,
         register,
         logout,
     };
