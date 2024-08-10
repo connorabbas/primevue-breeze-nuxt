@@ -3,7 +3,6 @@ import { useToast } from 'primevue/usetoast';
 import { useFlashMessage } from '~/composables/useFlashMessage.js';
 
 export const useAuthStore = defineStore('auth', () => {
-    const router = useRouter();
     const toast = useToast();
     const { setFlashMessage } = useFlashMessage();
 
@@ -11,12 +10,8 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref(null);
 
     function loginRedirect() {
-        const redirect = router.currentRoute.value.query.redirect;
-        if (redirect) {
-            router.push({ path: redirect });
-        } else {
-            router.push({ name: 'dashboard' });
-        }
+        // TODO: intended redirect
+        navigateTo({ name: 'dashboard' });
     }
     function getUserError() {
         user.value = null;
@@ -57,44 +52,24 @@ export const useAuthStore = defineStore('auth', () => {
         return axios.get('/sanctum/csrf-cookie');
     }
     function login(formData) {
-        progress.start();
-        return getCsrfCookie()
-            .then(() => {
-                return axios.post('/login', formData);
-            })
-            .finally(() => {
-                progress.done();
-            });
+        return getCsrfCookie().then(() => {
+            return axios.post('/login', formData);
+        });
     }
     function register(formData) {
-        progress.start();
-        return getCsrfCookie()
-            .then(() => {
-                return axios.post('/register', formData);
-            })
-            .finally(() => {
-                progress.done();
-            });
+        return getCsrfCookie().then(() => {
+            return axios.post('/register', formData);
+        });
     }
     function requestPasswordResetLink(formData) {
-        progress.start();
-        return getCsrfCookie()
-            .then(() => {
-                return axios.post('/forgot-password', formData);
-            })
-            .finally(() => {
-                progress.done();
-            });
+        return getCsrfCookie().then(() => {
+            return axios.post('/forgot-password', formData);
+        });
     }
     function resetPassword(formData) {
-        progress.start();
-        return getCsrfCookie()
-            .then(() => {
-                return axios.post('/reset-password', formData);
-            })
-            .finally(() => {
-                progress.done();
-            });
+        return getCsrfCookie().then(() => {
+            return axios.post('/reset-password', formData);
+        });
     }
     function sendVerificationEmail() {
         return axios.post('/email/verification-notification').then((response) => {
@@ -102,16 +77,10 @@ export const useAuthStore = defineStore('auth', () => {
         });
     }
     function logout() {
-        progress.start();
-        return axios
-            .post('/logout')
-            .then((response) => {
-                user.value = null;
-                router.push('/');
-            })
-            .finally(() => {
-                progress.done();
-            });
+        return axios.post('/logout').then((response) => {
+            user.value = null;
+            navigateTo('/');
+        });
     }
 
     return {

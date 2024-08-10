@@ -74,7 +74,9 @@ authStore.getUser();
                                 />
                             </NuxtLink>
                         </template>
-                        <ToggleThemeButton outlined />
+                        <ClientOnly>
+                            <ToggleThemeButton outlined />
+                        </ClientOnly>
                     </section>
                 </div>
             </ResponsiveCard>

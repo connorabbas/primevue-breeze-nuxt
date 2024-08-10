@@ -78,11 +78,13 @@ watchEffect(() => {
                         </div>
 
                         <div class="hidden md:flex md:items-center md:ms-6">
-                            <ToggleThemeButton
-                                text
-                                severity="secondary"
-                                rounded
-                            />
+                            <ClientOnly>
+                                <ToggleThemeButton
+                                    text
+                                    severity="secondary"
+                                    rounded
+                                />
+                            </ClientOnly>
                             <!-- User Dropdown Menu -->
                             <div class="ms-3 relative">
                                 <Menu
@@ -150,11 +152,13 @@ watchEffect(() => {
                     position="right"
                 >
                     <template #header>
-                        <ToggleThemeButton
-                            text
-                            severity="secondary"
-                            rounded
-                        />
+                        <ClientOnly>
+                            <ToggleThemeButton
+                                text
+                                severity="secondary"
+                                rounded
+                            />
+                        </ClientOnly>
                     </template>
                     <div>
                         <ul class="list-none p-0 m-0 overflow-hidden">

@@ -2,7 +2,7 @@ import customizedThemePreset from './theme-preset.mjs';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    ssr: false,
+    //ssr: false,
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
