@@ -5,7 +5,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         const authStore = useAuthStore();
         await authStore.getUser();
         if (!authStore.user) {
-            return navigateTo({ name: 'login' });
+            const intendedRoute = to.fullPath;
+            return navigateTo({
+                name: 'login',
+                query: { redirect: intendedRoute },
+            });
         }
     }
 });

@@ -10,6 +10,7 @@ definePageMeta({
 });
 
 const toast = useToast();
+const route = useRoute();
 const { flashMessages } = useFlashMessage();
 
 const emailInput = ref();
@@ -32,8 +33,7 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch
     body: form,
     onResponse({ request, response, options }) {
         if (response.ok) {
-            // TODO: Redirect to intended page or dashboard
-            navigateTo({ name: 'dashboard' });
+            navigateTo(route.query.redirect || { name: 'dashboard' });
         }
     },
     onResponseError({ request, response, options }) {

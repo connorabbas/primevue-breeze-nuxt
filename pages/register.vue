@@ -32,7 +32,6 @@ const { status: attemptRegistrationStatus, execute: attemptRegistration } = useL
     body: form,
     onResponse({ request, response, options }) {
         if (response.ok) {
-            // TODO: Redirect to intended page or dashboard
             navigateTo({ name: 'dashboard' });
         }
     },
