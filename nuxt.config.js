@@ -47,5 +47,5 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    css: ['~/assets/css/app.css', 'nprogress/nprogress.css', 'primeicons/primeicons.css'],
+    css: ['~/assets/css/app.css', 'primeicons/primeicons.css'],
 });

@@ -2,7 +2,7 @@
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <div>
             <NuxtLink to="/">
-                <ApplicationLogo class="w-auto h-10 fill-current text-surface-900 dark:text-surface-0" />
+                <ApplicationLogo class="w-20 h-15 text-center fill-current text-surface-900 dark:text-surface-0" />
             </NuxtLink>
         </div>
 
