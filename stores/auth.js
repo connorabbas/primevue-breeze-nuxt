@@ -30,13 +30,13 @@ export const useAuthStore = defineStore('auth', () => {
             triggerAuthServerErrorToast();
         },
         onResponse({ request, response, options }) {
-            if (response.ok) {
+            if (response.ok && response._data?.id && response._data?.name && response._data?.email) {
                 user.value = response._data;
             }
         },
         onResponseError({ request, response, options }) {
             if (response.status == 401) {
-                // endpoint is fine, user is unauthorized
+                // User is unauthorized
                 user.value = null;
             } else {
                 triggerAuthServerErrorToast();
@@ -80,6 +80,7 @@ export const useAuthStore = defineStore('auth', () => {
         mustVerifyEmail,
         user,
         getUser,
+        getUserStatus,
         getXsrfCookie,
         getXsrfCookieStatus,
         getCsrfCookie,
