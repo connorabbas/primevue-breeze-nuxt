@@ -1,11 +1,19 @@
 import customizedThemePreset from './theme-preset.mjs';
 
+const path = require('path');
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     ssr: false,
+    target: 'static',
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
+    nitro: {
+        output: {
+            publicDir: path.join(__dirname, '/dist'),
+        },
+    },
     devServer: {
         port: process.env.NUXT_DEV_SERVER_PORT || 3000,
     },

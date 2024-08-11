@@ -1,4 +1,7 @@
-const currentTheme = ref((import.meta.client) ? localStorage.getItem('selectedTheme') : 'light');
+const currentTheme = ref('light');
+if (import.meta.client) {
+    currentTheme.value = localStorage.getItem('selectedTheme') || 'light';
+}
 
 function initSiteTheme() {
     setTheme(currentTheme.value);
