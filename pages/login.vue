@@ -6,7 +6,7 @@ useHead({
     title: 'Login',
 });
 definePageMeta({
-    middleware: 'guest',
+    middleware: ['guest'],
     layout: false,
 });
 

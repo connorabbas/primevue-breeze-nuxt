@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', () => {
     const toast = useToast();
     const { setFlashMessage } = useFlashMessage();
 
-    const mustVerifyEmail = false;
+    const mustVerifyEmail = true;
     const user = ref(null);
 
     function triggerAuthServerErrorToast(summary = 'Authentication Error') {

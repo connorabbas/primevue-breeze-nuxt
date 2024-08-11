@@ -3,7 +3,7 @@ useHead({
     title: 'Dashboard',
 });
 definePageMeta({
-    middleware: 'auth',
+    middleware: ['auth', 'verified-user'],
     layout: false,
 });
 </script>
