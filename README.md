@@ -1,75 +1,26 @@
-# Nuxt 3 Minimal Starter
+# Nuxt w/ PrimeVue & Laravel Breeze API Stack
+A [Nuxt](https://nuxt.com/) & [PrimeVue](https://primevue.org/) starter kit meant for use with a [Laravel Breeze](https://laravel.com/docs/master/starter-kits#laravel-breeze) API stack backend.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+An alternative to: https://github.com/connorabbas/primevue-breeze-inertia & https://github.com/connorabbas/primevue-breeze-spa
 
-## Setup
+## Setup 
+1. Clone the repo (or download the zip)
+2. Create a new `.env` file in the root directory, reference the `.env.example` file for the vars/values
+3. Create a [new Laravel application](https://laravel.com/docs/master/installation) 
+4. Install [Laravel Breeze](https://laravel.com/docs/master/starter-kits#laravel-breeze-installation) using the [API Stack](https://laravel.com/docs/master/starter-kits#breeze-and-next) option
+5. Setup necessary `.env` configuration values in the Laravel API project
+    ```
+    # Remember, your SPA and API must share the same top-level domain
+    # Example implementation, could also use localhost with different port numbers
+    APP_URL="http://breeze-api.test" # Match this value with VITE_API_BASE_URL in the Vue app
+    FRONTEND_URL="http://nuxt.breeze-api.test"
+    SANCTUM_STATEFUL_DOMAINS="nuxt.breeze-api.test"
+    SESSION_DOMAIN=".breeze-api.test"
+    ```
 
-Make sure to install the dependencies:
+## Theme
+This starter kit provides a light/dark mode and custom theme functionality provided by the powerful PrimeVue theming system, using styled mode and custom design token values.
 
-```bash
-# npm
-npm install
+The starting point for customizing your theme will be the `theme-preset.js` file at the root of the project. To quickly change the look and feel of your theme, swap the [primary](https://primevue.org/theming/styled/#primary) values with a different set of [colors](https://primevue.org/theming/styled/#colors), change the [surface](https://primevue.org/theming/styled/#surface) `colorScheme` values (slate, gray, neutral, etc.), or completely change the [preset theme](https://primevue.org/theming/styled/#presets) (Aura used by default).
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Please reference the [PrimeVue Styled Mode Docs](https://primevue.org/theming/styled/) to fully understand how this system works, and how to further customize your theme to make it your own.

@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', () => {
     const toast = useToast();
     const { setFlashMessage } = useFlashMessage();
 
-    const mustVerifyEmail = true;
+    const mustVerifyEmail = false;
     const user = ref(null);
 
     function triggerAuthServerErrorToast(summary = 'Authentication Error') {
@@ -19,13 +19,9 @@ export const useAuthStore = defineStore('auth', () => {
         });
     }
 
-    const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useLaravelApiFetch('/sanctum/csrf-cookie', {
-        immediate: false,
-        watch: false,
-    });
+    const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useLaravelApiFetch('/sanctum/csrf-cookie');
+
     const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
-        immediate: false,
-        watch: false,
         onRequestError({ request, options, error }) {
             triggerAuthServerErrorToast();
         },
@@ -43,9 +39,8 @@ export const useAuthStore = defineStore('auth', () => {
             }
         },
     });
+
     const { status: logoutStatus, execute: logout } = useLaravelApiFetch('/logout', {
-        immediate: false,
-        watch: false,
         method: 'POST',
         onResponse({ request, response, options }) {
             if (response.ok) {
@@ -57,16 +52,15 @@ export const useAuthStore = defineStore('auth', () => {
             triggerAuthServerErrorToast('Logout Error');
         },
     });
-    function getCsrfCookie() {
-        return axios.get('/sanctum/csrf-cookie');
-    }
+
+    // TODO: convert to useFetch()
     function requestPasswordResetLink(formData) {
-        return getCsrfCookie().then(() => {
+        return getXsrfCookie().then(() => {
             return axios.post('/forgot-password', formData);
         });
     }
     function resetPassword(formData) {
-        return getCsrfCookie().then(() => {
+        return getXsrfCookie().then(() => {
             return axios.post('/reset-password', formData);
         });
     }
@@ -83,7 +77,6 @@ export const useAuthStore = defineStore('auth', () => {
         getUserStatus,
         getXsrfCookie,
         getXsrfCookieStatus,
-        getCsrfCookie,
         requestPasswordResetLink,
         resetPassword,
         sendVerificationEmail,

@@ -6,8 +6,8 @@ useHead({
     title: 'Login',
 });
 definePageMeta({
-    middleware: ['guest'],
     layout: false,
+    middleware: ['guest'],
 });
 
 const toast = useToast();
@@ -25,8 +25,6 @@ const form = reactive({
 });
 
 const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch('/login', {
-    immediate: false,
-    watch: false,
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {

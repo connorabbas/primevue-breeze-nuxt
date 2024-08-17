@@ -6,8 +6,8 @@ useHead({
     title: 'Verify Email',
 });
 definePageMeta({
-    middleware: ['auth'],
     layout: false,
+    middleware: ['auth'],
 });
 
 const toast = useToast();

@@ -1,5 +1,6 @@
-export const useLaravelApiFetch = (request, opts) => {
-    const config = useRuntimeConfig();
+export const useLaravelApiFetch = (request, opts = {}) => {
+    opts.immediate = false;
+    opts.watch = false;
     opts.credentials = 'include';
     opts.headers = {
         accept: 'application/json',
@@ -8,5 +9,5 @@ export const useLaravelApiFetch = (request, opts) => {
         opts.headers['X-XSRF-TOKEN'] = useCookie('XSRF-TOKEN');
     }
 
-    return useFetch(request, { baseURL: config.public.laravelApiBase, ...opts });
+    return useFetch(request, { baseURL: useRuntimeConfig().public.laravelApiBase, ...opts });
 };

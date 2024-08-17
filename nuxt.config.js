@@ -1,5 +1,3 @@
-import customizedThemePreset from './theme-preset.mjs';
-
 const path = require('path');
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -36,22 +34,11 @@ export default defineNuxtConfig({
     ],
     primevue: {
         autoImport: true,
-        options: {
-            theme: {
-                preset: customizedThemePreset,
-                options: {
-                    darkModeSelector: '.dark-mode',
-                    cssLayer: {
-                        name: 'primevue',
-                        order: 'tailwind-base, primevue, tailwind-utilities',
-                    },
-                },
-            },
-        },
+        importTheme: { from: '~/theme-preset.js' },
     },
     postcss: {
         plugins: {
-            tailwindcss: {},
+            tailwindcss: {}, // TODO: https://tailwindcss.com/docs/guides/nuxtjs#modules
             autoprefixer: {},
         },
     },

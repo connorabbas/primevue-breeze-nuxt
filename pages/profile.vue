@@ -3,8 +3,8 @@ useHead({
     title: 'Profile',
 });
 definePageMeta({
-    middleware: ['auth'],
     layout: false,
+    middleware: ['auth'],
 });
 </script>
 

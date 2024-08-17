@@ -6,8 +6,8 @@ useHead({
     title: 'Register',
 });
 definePageMeta({
-    middleware: ['guest'],
     layout: false,
+    middleware: ['guest'],
 });
 
 const toast = useToast();
@@ -24,8 +24,6 @@ const form = reactive({
 });
 
 const { status: attemptRegistrationStatus, execute: attemptRegistration } = useLaravelApiFetch('/register', {
-    immediate: false,
-    watch: false,
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {
