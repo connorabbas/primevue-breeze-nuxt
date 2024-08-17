@@ -6,7 +6,7 @@ services:
     working_dir: /web
     volumes:
       - '.:/web'
-      - 'nuxt-satic-output:/web/dist'
+      #- 'nuxt-satic-output:/web/dist' # revisit later
     tty: true
     labels:
       - "traefik.enable=true"

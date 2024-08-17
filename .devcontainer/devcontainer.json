@@ -21,9 +21,9 @@
                 "terminal.integrated.shell.linux": "/bin/sh"
             }
 		}
-	}
-    // "remoteUser": "node"
-	// "postCreateCommand": "npm install"
+	},
+    "postCreateCommand": "chown -R 1000:1000 /web && npm install",
+    "remoteUser": "node"
 	// "forwardPorts": [],
 	// "runServices": [],
 	// "shutdownAction": "none",
