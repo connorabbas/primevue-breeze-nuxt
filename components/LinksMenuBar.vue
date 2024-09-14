@@ -28,7 +28,7 @@ defineExpose({
                     v-bind="props.action"
                     @click="navigate"
                     :class="{
-                        'font-bold text-primary dark:text-primary-300 bg-primary-50 dark:bg-primary-950 rounded-lg':
+                        'font-semibold text-primary dark:text-primary-300 bg-primary-50 dark:bg-primary-950 rounded-lg':
                             item.active,
                     }"
                 >

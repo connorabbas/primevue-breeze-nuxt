@@ -29,6 +29,7 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch
     body: form,
     onResponse({ request, response, options }) {
         if (response.ok) {
+            validationErrors.value = {};
             navigateTo(route.query.redirect || { name: 'dashboard' });
         }
     },
