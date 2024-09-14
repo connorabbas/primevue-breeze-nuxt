@@ -1,5 +1,4 @@
 <script setup>
-import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/stores/auth';
 
 useHead({
@@ -7,7 +6,7 @@ useHead({
 });
 definePageMeta({
     layout: false,
-    middleware: ['auth'],
+    middleware: ['check-verification-required', 'auth'],
 });
 
 const authStore = useAuthStore();

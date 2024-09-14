@@ -2,6 +2,7 @@
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '~/stores/auth';
 
+const config = useRuntimeConfig();
 const toast = useToast();
 const authStore = useAuthStore();
 const { flashMessages } = useFlashMessage();
@@ -21,7 +22,7 @@ function updateProfileInformation() {
         detail: 'Profile information has been updated',
         life: 3000,
     });
-};
+}
 
 const verificationLinkSent = computed(() => flashMessages.success === 'verification-link-sent');
 
@@ -85,7 +86,7 @@ onMounted(() => {
                 />
             </div>
 
-            <div v-if="authStore.mustVerifyEmail && authStore.user.email_verified_at === null">
+            <div v-if="config.public.userMustHaveVerifiedEmail && authStore.user.email_verified_at === null">
                 <p class="text-sm mt-2">
                     Your email address is unverified.
                     <a
