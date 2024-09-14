@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            laravelApiBase: process.env.NUXT_PUBLIC_LARAVEL_API_BASE_URL,
+            apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
             userMustHaveVerifiedEmail: process.env.NUXT_PUBLIC_USER_VERIFIED_EMAIL_REQUIRED === 'true',
         },
     },

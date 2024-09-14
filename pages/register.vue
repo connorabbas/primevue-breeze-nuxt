@@ -23,7 +23,7 @@ const form = reactive({
     password_confirmation: '',
 });
 
-const { status: attemptRegistrationStatus, execute: attemptRegistration } = useLaravelApiFetch('/register', {
+const { status: attemptRegistrationStatus, execute: attemptRegistration } = useApiFetch('/register', {
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {

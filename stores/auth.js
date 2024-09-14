@@ -18,9 +18,9 @@ export const useAuthStore = defineStore('auth', () => {
         });
     }
 
-    const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useLaravelApiFetch('/sanctum/csrf-cookie');
+    const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useApiFetch('/sanctum/csrf-cookie');
 
-    const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
+    const { status: getUserStatus, execute: getUser } = useApiFetch('/api/user', {
         onResponse({ request, response, options }) {
             if (response.ok && response._data?.id && response._data?.name && response._data?.email) {
                 user.value = response._data;
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
         },
     });
 
-    const { execute: logout } = useLaravelApiFetch('/logout', {
+    const { execute: logout } = useApiFetch('/logout', {
         method: 'POST',
         onResponse({ request, response, options }) {
             if (response.ok) {
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
         },
     });
 
-    const { status: sendVerificationEmailStatus, execute: sendVerificationEmail } = useLaravelApiFetch(
+    const { status: sendVerificationEmailStatus, execute: sendVerificationEmail } = useApiFetch(
         '/email/verification-notification',
         {
             method: 'POST',

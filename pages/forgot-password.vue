@@ -19,7 +19,7 @@ const form = reactive({
     email: '',
 });
 
-const { status: requestPasswordResetLinkStatus, execute: requestPasswordResetLink } = useLaravelApiFetch(
+const { status: requestPasswordResetLinkStatus, execute: requestPasswordResetLink } = useApiFetch(
     '/forgot-password',
     {
         method: 'POST',

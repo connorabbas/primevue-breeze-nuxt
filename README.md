@@ -1,7 +1,7 @@
 # Nuxt w/ PrimeVue & Laravel Breeze API Stack
 A [Nuxt](https://nuxt.com/) & [PrimeVue](https://primevue.org/) starter kit meant for use with a [Laravel Breeze](https://laravel.com/docs/master/starter-kits#laravel-breeze) API stack backend.
 
-An alternative to: https://github.com/connorabbas/primevue-breeze-inertia & https://github.com/connorabbas/primevue-breeze-spa
+An alternative to using my [Inertia](https://github.com/connorabbas/primevue-breeze-inertia) or [Regular Vue SPA](https://github.com/connorabbas/primevue-breeze-spa) starter kits.
 
 ## Setup 
 1. Clone the repo (or download the zip)
@@ -12,7 +12,7 @@ An alternative to: https://github.com/connorabbas/primevue-breeze-inertia & http
     ```
     # Remember, your SPA and API must share the same top-level domain
     # Example implementation, could also use localhost with different port numbers
-    APP_URL="http://breeze-api.test" # Match this value with VITE_API_BASE_URL in the Vue app
+    APP_URL="http://breeze-api.test" # Match this value with NUXT_PUBLIC_API_BASE_URL in the Nuxt app .env
     FRONTEND_URL="http://nuxt.breeze-api.test" # Add app.frontend_url config entry as needed
     SANCTUM_STATEFUL_DOMAINS="nuxt.breeze-api.test"
     SESSION_DOMAIN=".breeze-api.test"

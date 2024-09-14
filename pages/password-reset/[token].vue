@@ -23,7 +23,7 @@ const form = reactive({
     password_confirmation: '',
 });
 
-const { status: resetPasswordStatus, execute: resetPassword } = useLaravelApiFetch('/reset-password', {
+const { status: resetPasswordStatus, execute: resetPassword } = useApiFetch('/reset-password', {
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {

@@ -24,7 +24,7 @@ const form = reactive({
     remember: false,
 });
 
-const { status: attemptLoginStatus, execute: attemptLogin } = useLaravelApiFetch('/login', {
+const { status: attemptLoginStatus, execute: attemptLogin } = useApiFetch('/login', {
     method: 'POST',
     body: form,
     onResponse({ request, response, options }) {
