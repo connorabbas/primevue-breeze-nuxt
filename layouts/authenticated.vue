@@ -19,12 +19,12 @@ const userMenu = ref();
 const userMenuItems = [
     {
         label: 'Profile',
-        icon: 'pi pi-fw pi-user',
+        icon: 'pi pi-user',
         route: { name: 'profile' },
     },
     {
         label: 'Log Out',
-        icon: 'pi pi-fw pi-sign-out',
+        icon: 'pi pi-sign-out',
         command: () => logout(),
     },
 ];

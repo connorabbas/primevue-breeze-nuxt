@@ -12,7 +12,7 @@ definePageMeta({
     <div>
         <NuxtLayout name="authenticated">
             <template #header>
-                <h2 class="font-bold text-xl leading-tight">Dashboard</h2>
+                <h2 class="font-semibold text-xl leading-tight">Dashboard</h2>
             </template>
             <template #content>
                 <Container :spaced-mobile="false">
