@@ -22,20 +22,6 @@ function updateProfileInformation() {
         life: 3000,
     });
 };
-const resendVerifyEmail = () => {
-    // TODO
-    /* authStore.sendVerificationEmail().catch((error) => {
-        handleAxiosError(error);
-        if (errors.critical || errors.other) {
-            toast.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'An unexpected error occurred, please try again later.',
-                life: 3000,
-            });
-        }
-    }); */
-};
 
 const verificationLinkSent = computed(() => flashMessages.success === 'verification-link-sent');
 
@@ -104,7 +90,7 @@ onMounted(() => {
                     Your email address is unverified.
                     <a
                         href="#"
-                        @click="resendVerifyEmail"
+                        @click="authStore.sendVerificationEmail"
                         class="underline text-sm text-muted-color underline text-muted-color hover:text-color"
                     >
                         Click here to re-send the verification email.

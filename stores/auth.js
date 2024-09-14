@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
         },
     });
 
-    const { status: logoutStatus, execute: logout } = useLaravelApiFetch('/logout', {
+    const { execute: logout } = useLaravelApiFetch('/logout', {
         method: 'POST',
         onResponse({ request, response, options }) {
             if (response.ok) {
@@ -50,12 +50,17 @@ export const useAuthStore = defineStore('auth', () => {
         },
     });
 
-    // TODO: convert to useFetch()
-    function sendVerificationEmail() {
-        return axios.post('/email/verification-notification').then((response) => {
-            setFlashMessage('success', response.data.status);
-        });
-    }
+    const { status: sendVerificationEmailStatus, execute: sendVerificationEmail } = useLaravelApiFetch(
+        '/email/verification-notification',
+        {
+            method: 'POST',
+            onResponse({ request, response, options }) {
+                if (response.ok) {
+                    setFlashMessage('success', response._data.status);
+                }
+            },
+        }
+    );
 
     return {
         mustVerifyEmail,
@@ -65,6 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
         getXsrfCookie,
         getXsrfCookieStatus,
         sendVerificationEmail,
+        sendVerificationEmailStatus,
         logout,
     };
 });

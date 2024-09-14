@@ -10,22 +10,11 @@ definePageMeta({
     middleware: ['auth'],
 });
 
-const toast = useToast();
 const authStore = useAuthStore();
 const { flashMessages } = useFlashMessage();
 
-const processing = ref(false);
-
 const verificationLinkSent = computed(() => flashMessages.success === 'verification-link-sent');
 
-const submit = () => {
-    processing.value = true;
-    authStore
-        .sendVerificationEmail()
-        .finally(() => {
-            processing.value = false;
-        });
-};
 async function logout() {
     await authStore.logout();
 }
@@ -47,23 +36,22 @@ async function logout() {
                 </Message>
             </template>
             <template #content>
-                {{ flashMessages }}
                 <div class="mb-6 text-sm text-muted-color">
                     Thanks for signing up! Before getting started, could you verify your email address by clicking on
                     the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
                 </div>
 
-                <form @submit.prevent="submit">
+                <form @submit.prevent="authStore.sendVerificationEmail">
                     <div class="mt-6 flex justify-between items-center">
                         <Button
                             raised
                             type="submit"
-                            :loading="processing"
+                            :loading="authStore.sendVerificationEmailStatus == 'pending'"
                             label="Resend Verification Email"
                             severity="contrast"
                         />
                         <a
-                            @click="logout()"
+                            @click="logout"
                             href="#"
                             class="text-muted-color underline text-muted-color hover:text-color"
                         >
