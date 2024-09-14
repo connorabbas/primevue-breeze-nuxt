@@ -22,9 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
     const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useLaravelApiFetch('/sanctum/csrf-cookie');
 
     const { status: getUserStatus, execute: getUser } = useLaravelApiFetch('/api/user', {
-        onRequestError({ request, options, error }) {
-            triggerAuthServerErrorToast();
-        },
         onResponse({ request, response, options }) {
             if (response.ok && response._data?.id && response._data?.name && response._data?.email) {
                 user.value = response._data;
@@ -54,16 +51,6 @@ export const useAuthStore = defineStore('auth', () => {
     });
 
     // TODO: convert to useFetch()
-    function requestPasswordResetLink(formData) {
-        return getXsrfCookie().then(() => {
-            return axios.post('/forgot-password', formData);
-        });
-    }
-    function resetPassword(formData) {
-        return getXsrfCookie().then(() => {
-            return axios.post('/reset-password', formData);
-        });
-    }
     function sendVerificationEmail() {
         return axios.post('/email/verification-notification').then((response) => {
             setFlashMessage('success', response.data.status);
@@ -77,8 +64,6 @@ export const useAuthStore = defineStore('auth', () => {
         getUserStatus,
         getXsrfCookie,
         getXsrfCookieStatus,
-        requestPasswordResetLink,
-        resetPassword,
         sendVerificationEmail,
         logout,
     };

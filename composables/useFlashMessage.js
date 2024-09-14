@@ -20,9 +20,7 @@ function clearFlashMessages() {
 }
 
 export function useFlashMessage() {
-    onMounted(() => {
-        clearFlashMessages();
-    });
+    clearFlashMessages();
 
     return {
         flashMessages: readonly(flashMessages),
