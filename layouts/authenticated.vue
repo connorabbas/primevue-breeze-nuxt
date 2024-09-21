@@ -110,11 +110,13 @@ async function logout() {
                         </template>
                         <template #end>
                             <div class="hidden md:flex md:items-center md:ms-6">
-                                <ToggleThemeButton
-                                    text
-                                    severity="secondary"
-                                    rounded
-                                />
+                                <ClientOnly>
+                                    <ToggleThemeButton
+                                        text
+                                        severity="secondary"
+                                        rounded
+                                    />
+                                </ClientOnly>
                                 <!-- User Dropdown Menu -->
                                 <div class="ms-3 relative">
                                     <LinksMenu
@@ -123,15 +125,17 @@ async function logout() {
                                         ref="userMenu"
                                         class="shadow"
                                     />
-                                    <Button
-                                        text
-                                        size="small"
-                                        severity="secondary"
-                                        @click="toggleUserMenu($event)"
-                                    >
-                                        <span class="text-base">{{ userName }}</span>
-                                        <i class="pi pi-angle-down ml-1"></i>
-                                    </Button>
+                                    <ClientOnly>
+                                        <Button
+                                            text
+                                            size="small"
+                                            severity="secondary"
+                                            @click="toggleUserMenu($event)"
+                                        >
+                                            <span class="text-base">{{ userName }}</span>
+                                            <i class="pi pi-angle-down ml-1"></i>
+                                        </Button>
+                                    </ClientOnly>
                                 </div>
                             </div>
 
