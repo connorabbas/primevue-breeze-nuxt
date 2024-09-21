@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { useToast } from 'primevue/usetoast';
 
@@ -15,7 +16,7 @@ const route = useRoute();
 const authStore = useAuthStore();
 const { flashMessages } = useFlashMessage();
 
-const emailInput = ref();
+const emailInput = useTemplateRef('email-input');
 
 const validationErrors = ref({});
 const form = reactive({
@@ -32,6 +33,7 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useApiFetch('/logi
             validationErrors.value = {};
             navigateTo(route.query.redirect || { name: 'dashboard' });
         }
+        form.password = null;
     },
     onResponseError({ request, response, options }) {
         if (response.status === 422) {
@@ -87,7 +89,7 @@ onMounted(() => {
                         >
                         <InputText
                             required
-                            ref="emailInput"
+                            ref="email-input"
                             id="email"
                             type="email"
                             v-model="form.email"
