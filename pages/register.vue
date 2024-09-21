@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { useToast } from 'primevue/usetoast';
 
@@ -13,7 +14,7 @@ definePageMeta({
 const toast = useToast();
 const authStore = useAuthStore();
 
-const nameInput = ref();
+const nameInput = useTemplateRef('name-input');
 
 const validationErrors = ref({});
 const form = reactive({
@@ -72,7 +73,7 @@ onMounted(() => {
                             >Name</label
                         >
                         <InputText
-                            ref="nameInput"
+                            ref="name-input"
                             id="name"
                             type="text"
                             v-model="form.name"

@@ -1,7 +1,11 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
+
+const currentPasswordInput = useTemplateRef('current-password-input');
+const newPasswordInput = useTemplateRef('new-password-input');
 
 const form = reactive({
     current_password: '',
@@ -42,7 +46,7 @@ function updatePassword() {
                 <InputText
                     required
                     id="current_password"
-                    ref="currentPasswordInput"
+                    ref="current-password-input"
                     type="password"
                     v-model="form.current_password"
                     class="w-full"
@@ -64,7 +68,7 @@ function updatePassword() {
                 <InputText
                     required
                     id="password"
-                    ref="passwordInput"
+                    ref="new-password-input"
                     type="password"
                     v-model="form.password"
                     class="w-full"

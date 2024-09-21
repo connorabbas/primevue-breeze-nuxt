@@ -1,7 +1,8 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import InputErrors from '~/components/InputErrors.vue';
 
-const passwordInput = ref(null);
+const passwordInput = useTemplateRef('password-input');
 const modalOpen = ref(false);
 
 const form = reactive({
@@ -44,7 +45,7 @@ watch(modalOpen, (newModalOpen) => {
                 <InputText
                     required
                     id="password"
-                    ref="passwordInput"
+                    ref="password-input"
                     type="password"
                     placeholder="Password"
                     v-model="form.password"

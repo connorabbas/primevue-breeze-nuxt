@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { useToast } from 'primevue/usetoast';
 
@@ -14,6 +15,8 @@ const toast = useToast();
 const route = useRoute();
 const authStore = useAuthStore();
 const { setFlashMessage } = useFlashMessage();
+
+const emailInput = useTemplateRef('email-input');
 
 const validationErrors = ref({});
 const form = reactive({
@@ -56,6 +59,10 @@ async function handleResetPasswordRequest() {
 const processingFormRequest = computed(() => {
     return authStore.getXsrfCookieStatus.value == 'pending' || resetPasswordStatus.value == 'pending';
 });
+
+onMounted(() => {
+    emailInput.value.$el.focus();
+});
 </script>
 
 <template>
@@ -69,9 +76,8 @@ const processingFormRequest = computed(() => {
                         >Email</label
                     >
                     <InputText
-                        autofocus
                         required
-                        ref="emailInput"
+                        ref="email-input"
                         id="email"
                         type="email"
                         v-model="form.email"
