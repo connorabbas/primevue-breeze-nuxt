@@ -33,6 +33,7 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useApiFetch('/logi
             validationErrors.value = {};
             navigateTo(route.query.redirect || { name: 'dashboard' });
         }
+        form.password = null;
     },
     onResponseError({ request, response, options }) {
         if (response.status === 422) {
