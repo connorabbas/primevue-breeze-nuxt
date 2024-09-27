@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 
 const authStore = useAuthStore();
@@ -15,7 +16,7 @@ const mainMenuItems = [
 ];
 
 // User menu (desktop)
-const userMenu = ref();
+const userMenu = useTemplateRef('user-menu');
 const userMenuItems = [
     {
         label: 'Profile',
@@ -122,7 +123,7 @@ async function logout() {
                                     <LinksMenu
                                         :model="userMenuItems"
                                         popup
-                                        ref="userMenu"
+                                        ref="user-menu"
                                         class="shadow"
                                     />
                                     <ClientOnly>
@@ -172,7 +173,7 @@ async function logout() {
                     <div>
                         <div class="mb-5">
                             <p class="text-muted-color font-bold uppercase text-sm mb-2"> Home </p>
-                            <NestedLinksMenu
+                            <LinksPanelMenu
                                 :model="homeMobileMenuItems"
                                 class="w-full"
                             />

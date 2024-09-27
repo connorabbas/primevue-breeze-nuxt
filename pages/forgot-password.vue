@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { useToast } from 'primevue/usetoast';
 
@@ -14,36 +15,35 @@ const toast = useToast();
 const authStore = useAuthStore();
 const { flashMessages, setFlashMessage } = useFlashMessage();
 
+const emailInput = useTemplateRef('email-input');
+
 const validationErrors = ref({});
 const form = reactive({
     email: '',
 });
 
-const { status: requestPasswordResetLinkStatus, execute: requestPasswordResetLink } = useApiFetch(
-    '/forgot-password',
-    {
-        method: 'POST',
-        body: form,
-        onResponse({ request, response, options }) {
-            if (response.ok) {
-                validationErrors.value = {};
-                setFlashMessage('success', response._data.status);
-            }
-        },
-        onResponseError({ request, response, options }) {
-            if (response.status === 422) {
-                validationErrors.value = response._data.errors;
-            } else {
-                toast.add({
-                    severity: 'error',
-                    summary: 'Request Failed',
-                    detail: 'Something went wrong, please try again later.',
-                    life: 3000,
-                });
-            }
-        },
-    }
-);
+const { status: requestPasswordResetLinkStatus, execute: requestPasswordResetLink } = useApiFetch('/forgot-password', {
+    method: 'POST',
+    body: form,
+    onResponse({ request, response, options }) {
+        if (response.ok) {
+            validationErrors.value = {};
+            setFlashMessage('success', response._data.status);
+        }
+    },
+    onResponseError({ request, response, options }) {
+        if (response.status === 422) {
+            validationErrors.value = response._data.errors;
+        } else {
+            toast.add({
+                severity: 'error',
+                summary: 'Request Failed',
+                detail: 'Something went wrong, please try again later.',
+                life: 3000,
+            });
+        }
+    },
+});
 
 async function handleForgotPasswordRequest() {
     await authStore.getXsrfCookie();
@@ -52,6 +52,10 @@ async function handleForgotPasswordRequest() {
 
 const processingFormRequest = computed(() => {
     return authStore.getXsrfCookieStatus.value == 'pending' || requestPasswordResetLinkStatus.value == 'pending';
+});
+
+onMounted(() => {
+    emailInput.value.$el.focus();
 });
 </script>
 
@@ -82,9 +86,8 @@ const processingFormRequest = computed(() => {
                         >Email</label
                     >
                     <InputText
-                        autofocus
                         required
-                        ref="emailInput"
+                        ref="email-input"
                         id="email"
                         type="email"
                         v-model="form.email"

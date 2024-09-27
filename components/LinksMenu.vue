@@ -1,15 +1,15 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import Menu from 'primevue/menu';
 
-const childRef = ref(null);
-
+const childRef = useTemplateRef('child-ref');
 defineExpose({
     childRef,
 });
 </script>
 
 <template>
-    <Menu ref="childRef">
+    <Menu ref="child-ref">
         <template #item="{ item, props }">
             <NuxtLink
                 v-if="item.route"

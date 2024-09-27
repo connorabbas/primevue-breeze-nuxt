@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateRef } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '~/stores/auth';
 
@@ -7,7 +8,7 @@ const toast = useToast();
 const authStore = useAuthStore();
 const { flashMessages } = useFlashMessage();
 
-const nameInput = ref();
+const nameInput = useTemplateRef('name-input');
 
 const form = reactive({
     name: authStore.user.name || '',
@@ -52,7 +53,7 @@ onMounted(() => {
                 >
                 <InputText
                     required
-                    ref="nameInput"
+                    ref="name-input"
                     id="name"
                     type="text"
                     v-model="form.name"
