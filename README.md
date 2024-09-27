@@ -3,7 +3,7 @@ A [Nuxt](https://nuxt.com/) & [PrimeVue](https://primevue.org/) starter kit mean
 
 An alternative to using my [Inertia](https://github.com/connorabbas/primevue-breeze-inertia) or [Traditional Vue SPA](https://github.com/connorabbas/primevue-breeze-spa) starter kits.
 
-The default (master) branch is setup for client-side rendering only (`ssr: false`), there is a dedicated branch if you want [universal / server-side rendering](https://github.com/connorabbas/primevue-breeze-nuxt/tree/feature/ssr).
+SSR authorization/middleware possible using [Pinia Plugin Persistedstate](https://prazdevs.github.io/pinia-plugin-persistedstate/).
 
 ## Setup 
 1. Clone the repo (or download the zip)
