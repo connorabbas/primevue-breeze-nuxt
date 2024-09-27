@@ -1,7 +1,9 @@
 # Nuxt w/ PrimeVue & Laravel Breeze API Stack
 A [Nuxt](https://nuxt.com/) & [PrimeVue](https://primevue.org/) starter kit meant for use with a [Laravel Breeze](https://laravel.com/docs/master/starter-kits#laravel-breeze) API stack backend.
 
-An alternative to using my [Inertia](https://github.com/connorabbas/primevue-breeze-inertia) or [Regular Vue SPA](https://github.com/connorabbas/primevue-breeze-spa) starter kits.
+An alternative to using my [Inertia](https://github.com/connorabbas/primevue-breeze-inertia) or [Traditional Vue SPA](https://github.com/connorabbas/primevue-breeze-spa) starter kits.
+
+The default (master) branch is setup for client-side rendering only (`ssr: false`), there is a dedicated branch if you want [universal / server-side rendering](https://github.com/connorabbas/primevue-breeze-nuxt/tree/feature/ssr).
 
 ## Setup 
 1. Clone the repo (or download the zip)
