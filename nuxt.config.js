@@ -4,7 +4,7 @@ const path = require('path');
 export default defineNuxtConfig({
     //ssr: false,
     //target: 'static',
-    modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
+    modules: ['@pinia/nuxt', '@primevue/nuxt-module', 'pinia-plugin-persistedstate/nuxt'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
     nitro: {

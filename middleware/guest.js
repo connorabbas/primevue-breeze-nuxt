@@ -1,11 +1,11 @@
 import { useAuthStore } from '~/stores/auth';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    if (import.meta.client) {
-        const authStore = useAuthStore();
-        await authStore.getUser();
-        if (authStore.user) {
-            return navigateTo({ name: 'dashboard' });
-        }
+    const nuxtApp = useNuxtApp();
+    const authStore = useAuthStore(nuxtApp.$pinia);
+
+    await authStore.getUser();
+    if (authStore.user) {
+        return navigateTo({ name: 'dashboard' });
     }
 });

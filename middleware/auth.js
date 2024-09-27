@@ -4,11 +4,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const nuxtApp = useNuxtApp();
     const authStore = useAuthStore(nuxtApp.$pinia);
 
-    if (import.meta.server) {
-        await authStore.getUser(); // Fetch user on server-side
-    }
-
-    if (import.meta.client && !authStore.user) {
+    await authStore.getUser();
+    if (!authStore.user) {
         const intendedRoute = to.fullPath;
         return navigateTo({
             name: 'login',
