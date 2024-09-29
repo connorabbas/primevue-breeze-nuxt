@@ -1,7 +1,6 @@
 <script setup>
 import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
-import { useToast } from 'primevue/usetoast';
 
 useHead({
     title: 'Register',
@@ -11,7 +10,6 @@ definePageMeta({
     middleware: ['guest'],
 });
 
-const toast = useToast();
 const authStore = useAuthStore();
 
 const nameInput = useTemplateRef('name-input');
@@ -27,31 +25,22 @@ const form = reactive({
 const { status: attemptRegistrationStatus, execute: attemptRegistration } = useApiFetch('/register', {
     method: 'POST',
     body: form,
-    onResponse({ request, response, options }) {
+    async onResponse({ request, response, options }) {
         if (response.ok) {
+            await authStore.fetchUser();
             navigateTo({ name: 'dashboard' });
-        }
-    },
-    onResponseError({ request, response, options }) {
-        if (response.status === 422) {
+        } else if (response.status === 422) {
             validationErrors.value = response._data.errors;
-        } else {
-            toast.add({
-                severity: 'error',
-                summary: 'Registration Failed',
-                detail: 'Unable to reach the authentication server, please try again later.',
-                life: 3000,
-            });
         }
     },
 });
 async function handleRegister() {
-    await authStore.getXsrfCookie();
+    await authStore.fetchXsrfCookie();
     await attemptRegistration();
 }
 
 const registering = computed(() => {
-    return authStore.getXsrfCookieStatus.value == 'pending' || attemptRegistrationStatus.value == 'pending';
+    return authStore.fetchXsrfCookieStatus.value == 'pending' || attemptRegistrationStatus.value == 'pending';
 });
 
 onMounted(() => {

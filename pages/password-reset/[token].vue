@@ -1,7 +1,6 @@
 <script setup>
 import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
-import { useToast } from 'primevue/usetoast';
 
 useHead({
     title: 'Reset Password',
@@ -11,7 +10,6 @@ definePageMeta({
     middleware: ['guest'],
 });
 
-const toast = useToast();
 const route = useRoute();
 const authStore = useAuthStore();
 const { setFlashMessage } = useFlashMessage();
@@ -35,29 +33,19 @@ const { status: resetPasswordStatus, execute: resetPassword } = useApiFetch('/re
             navigateTo({ name: 'login' }).then(() => {
                 setFlashMessage('success', response._data.status);
             });
-        }
-    },
-    onResponseError({ request, response, options }) {
-        if (response.status === 422) {
+        } else if (response.status === 422) {
             validationErrors.value = response._data.errors;
-        } else {
-            toast.add({
-                severity: 'error',
-                summary: 'Request Failed',
-                detail: 'Something went wrong, please try again later.',
-                life: 3000,
-            });
         }
     },
 });
 
 async function handleResetPasswordRequest() {
-    await authStore.getXsrfCookie();
+    await authStore.fetchXsrfCookie();
     await resetPassword();
 }
 
 const processingFormRequest = computed(() => {
-    return authStore.getXsrfCookieStatus.value == 'pending' || resetPasswordStatus.value == 'pending';
+    return authStore.fetchXsrfCookieStatus.value == 'pending' || resetPasswordStatus.value == 'pending';
 });
 
 onMounted(() => {

@@ -5,6 +5,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const authStore = useAuthStore(nuxtApp.$pinia);
 
     if (authStore.user) {
-        return navigateTo({ name: 'dashboard' });
+        await authStore.fetchUser();
     }
 });
