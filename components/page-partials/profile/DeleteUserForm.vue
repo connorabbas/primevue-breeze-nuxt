@@ -28,6 +28,7 @@ watch(modalOpen, (newModalOpen) => {
 <template>
     <section class="space-y-6">
         <Dialog
+            :draggable="false"
             position="center"
             v-model:visible="modalOpen"
             modal
@@ -53,6 +54,7 @@ watch(modalOpen, (newModalOpen) => {
                     :invalid="false"
                     autocomplete="current-password"
                     @keyup.enter="deleteUser"
+                    autofocus
                 />
                 <InputErrors
                     class="mt-2"
