@@ -1,4 +1,4 @@
-# Nuxt w/ PrimeVue & Laravel Breeze API Stack
+# Nuxt w/ PrimeVue & Laravel Breeze API Stack (SSR is a WIP)
 A [Nuxt](https://nuxt.com/) & [PrimeVue](https://primevue.org/) starter kit meant for use with a [Laravel Breeze](https://laravel.com/docs/master/starter-kits#laravel-breeze) API stack backend.
 
 An alternative to using my [Inertia](https://github.com/connorabbas/primevue-breeze-inertia) or [Traditional Vue SPA](https://github.com/connorabbas/primevue-breeze-spa) starter kits.
