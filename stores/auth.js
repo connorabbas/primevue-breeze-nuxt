@@ -75,6 +75,9 @@ export const useAuthStore = defineStore(
         };
     },
     {
-        persist: true,
+        // remove for client-side only applications
+        persist: {
+            pick: ['user'],
+        },
     }
 );
