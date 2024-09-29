@@ -11,7 +11,6 @@ export const useAuthStore = defineStore(
 
         const { status: fetchUserStatus, execute: fetchUser } = useApiFetch('/api/user', {
             onResponse({ response }) {
-                console.log('fetched user');
                 if (response.status === 200) {
                     user.value = response._data;
                 }

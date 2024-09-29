@@ -29,7 +29,6 @@ const { status: attemptLoginStatus, execute: attemptLogin } = useApiFetch('/logi
     async onResponse({ response }) {
         form.password = null;
         if (response.ok) {
-            console.log('login ok');
             validationErrors.value = {};
             await authStore.fetchUser();
             navigateTo(route.query.redirect || { name: 'dashboard' });
