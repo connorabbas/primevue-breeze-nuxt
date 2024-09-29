@@ -1,7 +1,6 @@
 <script setup>
 import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
-import { useToast } from 'primevue/usetoast';
 
 useHead({
     title: 'Login',
@@ -11,7 +10,6 @@ definePageMeta({
     middleware: ['guest'],
 });
 
-const toast = useToast();
 const route = useRoute();
 const authStore = useAuthStore();
 const { flashMessages } = useFlashMessage();
@@ -28,33 +26,25 @@ const form = reactive({
 const { status: attemptLoginStatus, execute: attemptLogin } = useApiFetch('/login', {
     method: 'POST',
     body: form,
-    onResponse({ request, response, options }) {
-        if (response.ok) {
-            validationErrors.value = {};
-            navigateTo(route.query.redirect || { name: 'dashboard' });
-        }
+    async onResponse({ response }) {
         form.password = null;
-    },
-    onResponseError({ request, response, options }) {
-        if (response.status === 422) {
+        if (response.ok) {
+            console.log('login ok');
+            validationErrors.value = {};
+            await authStore.fetchUser();
+            navigateTo(route.query.redirect || { name: 'dashboard' });
+        } else if (response.status === 422) {
             validationErrors.value = response._data.errors;
-        } else {
-            toast.add({
-                severity: 'error',
-                summary: 'Login Failed',
-                detail: 'Unable to reach the authentication server, please try again later.',
-                life: 3000,
-            });
         }
     },
 });
 async function handleLogin() {
-    await authStore.getXsrfCookie();
+    await authStore.fetchXsrfCookie();
     await attemptLogin();
 }
 
 const loggingIn = computed(() => {
-    return authStore.getXsrfCookieStatus.value == 'pending' || attemptLoginStatus.value == 'pending';
+    return authStore.fetchXsrfCookieStatus.value == 'pending' || attemptLoginStatus.value == 'pending';
 });
 
 onMounted(() => {

@@ -1,7 +1,6 @@
 <script setup>
 import { useTemplateRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
-import { useToast } from 'primevue/usetoast';
 
 useHead({
     title: 'Forgot Password',
@@ -11,7 +10,6 @@ definePageMeta({
     middleware: ['guest'],
 });
 
-const toast = useToast();
 const authStore = useAuthStore();
 const { flashMessages, setFlashMessage } = useFlashMessage();
 
@@ -29,29 +27,19 @@ const { status: requestPasswordResetLinkStatus, execute: requestPasswordResetLin
         if (response.ok) {
             validationErrors.value = {};
             setFlashMessage('success', response._data.status);
-        }
-    },
-    onResponseError({ request, response, options }) {
-        if (response.status === 422) {
+        } else if (response.status === 422) {
             validationErrors.value = response._data.errors;
-        } else {
-            toast.add({
-                severity: 'error',
-                summary: 'Request Failed',
-                detail: 'Something went wrong, please try again later.',
-                life: 3000,
-            });
         }
     },
 });
 
 async function handleForgotPasswordRequest() {
-    await authStore.getXsrfCookie();
+    await authStore.fetchXsrfCookie();
     await requestPasswordResetLink();
 }
 
 const processingFormRequest = computed(() => {
-    return authStore.getXsrfCookieStatus.value == 'pending' || requestPasswordResetLinkStatus.value == 'pending';
+    return authStore.fetchXsrfCookieStatus.value == 'pending' || requestPasswordResetLinkStatus.value == 'pending';
 });
 
 onMounted(() => {

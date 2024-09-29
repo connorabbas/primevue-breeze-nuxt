@@ -1,53 +1,30 @@
 import { defineStore } from 'pinia';
-import { useToast } from 'primevue/usetoast';
 
 export const useAuthStore = defineStore(
     'auth',
     () => {
-        const toast = useToast();
         const { setFlashMessage } = useFlashMessage();
 
         const user = ref(null);
 
-        function triggerAuthServerErrorToast(summary = 'Authentication Error') {
-            user.value = null;
-            toast.removeAllGroups(); // prevent multiple of the same toast from popping up
-            toast.add({
-                severity: 'error',
-                summary: summary,
-                detail: 'Unable to reach the authentication server, please try again later.',
-                life: 3000,
-            });
-        }
+        const { status: fetchXsrfCookieStatus, execute: fetchXsrfCookie } = useApiFetch('/sanctum/csrf-cookie');
 
-        const { status: getXsrfCookieStatus, execute: getXsrfCookie } = useApiFetch('/sanctum/csrf-cookie');
-
-        const { status: getUserStatus, execute: getUser } = useApiFetch('/api/user', {
-            onResponse({ request, response, options }) {
-                if (response.ok && response._data?.id && response._data?.name && response._data?.email) {
+        const { status: fetchUserStatus, execute: fetchUser } = useApiFetch('/api/user', {
+            onResponse({ response }) {
+                console.log('fetched user');
+                if (response.status === 200) {
                     user.value = response._data;
-                }
-            },
-            onResponseError({ request, response, options }) {
-                if (response.status == 401) {
-                    // User is unauthorized
-                    user.value = null;
-                } else {
-                    triggerAuthServerErrorToast();
                 }
             },
         });
 
         const { execute: logout } = useApiFetch('/logout', {
             method: 'POST',
-            onResponse({ request, response, options }) {
+            onResponse({ response }) {
                 if (response.ok) {
                     user.value = null;
                     navigateTo({ name: 'index' });
                 }
-            },
-            onResponseError({ request, response, options }) {
-                triggerAuthServerErrorToast('Logout Error');
             },
         });
 
@@ -55,7 +32,7 @@ export const useAuthStore = defineStore(
             '/email/verification-notification',
             {
                 method: 'POST',
-                onResponse({ request, response, options }) {
+                onResponse({ response }) {
                     if (response.ok) {
                         setFlashMessage('success', response._data.status);
                     }
@@ -65,10 +42,10 @@ export const useAuthStore = defineStore(
 
         return {
             user,
-            getUser,
-            getUserStatus,
-            getXsrfCookie,
-            getXsrfCookieStatus,
+            fetchUser,
+            fetchUserStatus,
+            fetchXsrfCookie,
+            fetchXsrfCookieStatus,
             sendVerificationEmail,
             sendVerificationEmailStatus,
             logout,
