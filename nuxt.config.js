@@ -2,9 +2,9 @@ const path = require('path');
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    //ssr: false,
+    ssr: true,
     //target: 'static',
-    modules: ['@pinia/nuxt', '@primevue/nuxt-module', 'pinia-plugin-persistedstate/nuxt'],
+    modules: ['@primevue/nuxt-module', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
     nitro: {
