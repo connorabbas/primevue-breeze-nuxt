@@ -7,48 +7,44 @@ export default defineNuxtPlugin({
     parallel: true,
     async setup(nuxtApp) {
         const toast = useToast();
-        const authStore = useAuthStore();
+        const authStore = useAuthStore(nuxtApp.$pinia);
 
         // site theme
         const { setTheme, currentTheme } = useTheme();
         setTheme(currentTheme.value);
 
-        // fetch configuration
+        // fetch configuration, error handling
         globalThis.$fetch = ofetch.create({
             retry: false,
             onRequestError({ error }) {
                 if (import.meta.server) return;
                 if (error.name === 'AbortError') return;
+                toast.removeAllGroups();
                 toast.add({
                     severity: 'error',
-                    summary: 'Error',
-                    detail: error.message ?? 'Something went wrong',
+                    summary: 'Network Error',
+                    detail: 'The server did not respond.',
                     life: 3000,
                 });
             },
             onResponseError({ response }) {
                 if (response.status === 401) {
-                    if (authStore.logged) {
-                        authStore.user = null;
-                    }
+                    authStore.user = null;
                     if (import.meta.client) {
                         toast.add({
                             severity: 'info',
                             summary: 'Unauthorized',
-                            detail: 'Please log in to continue',
-                            life: 3000,
+                            detail: 'Please log in.',
+                            life: 4000,
                         });
                     }
-                } else if (response.status !== 422) {
-                    if (import.meta.client) {
-                        toast.removeAllGroups();
-                        toast.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: response._data?.message ?? response.statusText ?? 'Something went wrong',
-                            life: 3000,
-                        });
-                    }
+                } else if (response.status >= 500) {
+                    toast.add({
+                        severity: 'info',
+                        summary: 'Server Error',
+                        detail: 'A critical error occurred.',
+                        life: 3000,
+                    });
                 }
             },
         });
