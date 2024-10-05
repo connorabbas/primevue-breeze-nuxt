@@ -9,10 +9,6 @@ export default defineNuxtPlugin({
         const toast = useToast();
         const authStore = useAuthStore(nuxtApp.$pinia);
 
-        // site theme
-        const { setTheme, currentTheme } = useTheme();
-        setTheme(currentTheme.value);
-
         // fetch configuration, error handling
         globalThis.$fetch = ofetch.create({
             retry: false,
