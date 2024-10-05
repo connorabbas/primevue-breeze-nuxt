@@ -24,6 +24,10 @@ export default defineNuxtConfig({
     app: {
         head: {
             title: 'Nuxt + PrimeVue + Breeze API',
+            link: [
+                { rel: 'preconnect', href: 'https://fonts.bunny.net' },
+                { rel: 'stylesheet', href: 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap' },
+            ],
         },
         meta: [{ name: 'description', content: 'Nuxt + PrimeVue + Breeze API Starter Kit' }],
     },
