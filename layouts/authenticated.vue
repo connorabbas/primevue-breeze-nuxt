@@ -126,17 +126,15 @@ async function logout() {
                                         ref="user-menu"
                                         class="shadow"
                                     />
-                                    <ClientOnly>
-                                        <Button
-                                            text
-                                            size="small"
-                                            severity="secondary"
-                                            @click="toggleUserMenu($event)"
-                                        >
-                                            <span class="text-base">{{ userName }}</span>
-                                            <i class="pi pi-angle-down ml-1"></i>
-                                        </Button>
-                                    </ClientOnly>
+                                    <Button
+                                        text
+                                        size="small"
+                                        severity="secondary"
+                                        @click="toggleUserMenu($event)"
+                                    >
+                                        <span class="text-base">{{ userName }}</span>
+                                        <i class="pi pi-angle-down ml-1"></i>
+                                    </Button>
                                 </div>
                             </div>
 

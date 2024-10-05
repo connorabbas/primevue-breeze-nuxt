@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         },
     ],
     primevue: {
-        autoImport: true,
+        autoImport: false,
         importTheme: { from: '~/theme-preset.js' },
     },
     postcss: {
