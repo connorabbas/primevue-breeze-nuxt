@@ -222,7 +222,7 @@ async function logout() {
 
             <!-- Page Content -->
             <main>
-                <slot name="content" />
+                <slot />
             </main>
         </div>
     </div>

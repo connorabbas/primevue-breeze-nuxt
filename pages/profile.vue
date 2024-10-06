@@ -14,23 +14,21 @@ definePageMeta({
             <template #header>
                 <h2 class="font-semibold text-xl leading-tight">Profile</h2>
             </template>
-            <template #content>
-                <Container :spaced-mobile="false">
-                    <div class="py-12">
-                        <div class="space-y-6">
-                            <ResponsiveCard>
-                                <UpdateProfileInformationForm class="max-w-xl" />
-                            </ResponsiveCard>
-                            <ResponsiveCard>
-                                <UpdatePasswordForm class="max-w-xl" />
-                            </ResponsiveCard>
-                            <ResponsiveCard>
-                                <DeleteUserForm class="max-w-xl" />
-                            </ResponsiveCard>
-                        </div>
+            <Container :spaced-mobile="false">
+                <div class="py-12">
+                    <div class="space-y-6">
+                        <ResponsiveCard>
+                            <UpdateProfileInformationForm class="max-w-xl" />
+                        </ResponsiveCard>
+                        <ResponsiveCard>
+                            <UpdatePasswordForm class="max-w-xl" />
+                        </ResponsiveCard>
+                        <ResponsiveCard>
+                            <DeleteUserForm class="max-w-xl" />
+                        </ResponsiveCard>
                     </div>
-                </Container>
-            </template>
+                </div>
+            </Container>
         </NuxtLayout>
     </div>
 </template>

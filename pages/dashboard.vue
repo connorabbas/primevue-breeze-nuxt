@@ -14,15 +14,13 @@ definePageMeta({
             <template #header>
                 <h2 class="font-semibold text-xl leading-tight">Dashboard</h2>
             </template>
-            <template #content>
-                <Container :spaced-mobile="false">
-                    <div class="py-12">
-                        <ResponsiveCard>
-                            <p class="m-0">You are logged in!</p>
-                        </ResponsiveCard>
-                    </div>
-                </Container>
-            </template>
+            <Container :spaced-mobile="false">
+                <div class="py-12">
+                    <ResponsiveCard>
+                        <p class="m-0">You are logged in!</p>
+                    </ResponsiveCard>
+                </div>
+            </Container>
         </NuxtLayout>
     </div>
 </template>

@@ -6,6 +6,6 @@
             :height="1"
             color="var(--p-primary-400)"
         />
-        <NuxtPage />
+        <NuxtPage :key="$route.path" />
     </div>
 </template>

@@ -34,31 +34,29 @@ async function logout() {
                     A new verification link has been sent to the email address you provided during registration.
                 </Message>
             </template>
-            <template #content>
-                <div class="mb-6 text-sm text-muted-color">
-                    Thanks for signing up! Before getting started, could you verify your email address by clicking on
-                    the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
-                </div>
+            <div class="mb-6 text-sm text-muted-color">
+                Thanks for signing up! Before getting started, could you verify your email address by clicking on the
+                link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+            </div>
 
-                <form @submit.prevent="authStore.sendVerificationEmail">
-                    <div class="mt-6 flex justify-between items-center">
-                        <Button
-                            raised
-                            type="submit"
-                            :loading="authStore.sendVerificationEmailStatus == 'pending'"
-                            label="Resend Verification Email"
-                            severity="contrast"
-                        />
-                        <a
-                            @click="logout"
-                            href="#"
-                            class="text-muted-color underline text-muted-color hover:text-color"
-                        >
-                            Log Out
-                        </a>
-                    </div>
-                </form>
-            </template>
+            <form @submit.prevent="authStore.sendVerificationEmail">
+                <div class="mt-6 flex justify-between items-center">
+                    <Button
+                        raised
+                        type="submit"
+                        :loading="authStore.sendVerificationEmailStatus == 'pending'"
+                        label="Resend Verification Email"
+                        severity="contrast"
+                    />
+                    <a
+                        @click="logout"
+                        href="#"
+                        class="text-muted-color underline text-muted-color hover:text-color"
+                    >
+                        Log Out
+                    </a>
+                </div>
+            </form>
         </NuxtLayout>
     </div>
 </template>
