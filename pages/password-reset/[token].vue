@@ -55,82 +55,80 @@ onMounted(() => {
 
 <template>
     <NuxtLayout name="guest">
-        <template #content>
-            <form @submit.prevent="handleResetPasswordRequest">
-                <div class="mb-6">
-                    <label
-                        for="email"
-                        class="block mb-2"
-                        >Email</label
-                    >
-                    <InputText
-                        required
-                        ref="email-input"
-                        id="email"
-                        type="email"
-                        v-model="form.email"
-                        class="w-full"
-                        :invalid="Boolean(validationErrors?.email)"
-                        autocomplete="username"
-                    />
-                    <InputErrors
-                        class="mt-2"
-                        :errors="validationErrors?.email"
-                    />
-                </div>
+        <form @submit.prevent="handleResetPasswordRequest">
+            <div class="mb-6">
+                <label
+                    for="email"
+                    class="block mb-2"
+                    >Email</label
+                >
+                <InputText
+                    required
+                    ref="email-input"
+                    id="email"
+                    type="email"
+                    v-model="form.email"
+                    class="w-full"
+                    :invalid="Boolean(validationErrors?.email)"
+                    autocomplete="username"
+                />
+                <InputErrors
+                    class="mt-2"
+                    :errors="validationErrors?.email"
+                />
+            </div>
 
-                <div class="mb-6">
-                    <label
-                        for="password"
-                        class="block mb-2"
-                        >New Password</label
-                    >
-                    <InputText
-                        id="password"
-                        type="password"
-                        v-model="form.password"
-                        class="w-full"
-                        :invalid="Boolean(validationErrors?.password)"
-                        required
-                        autocomplete="new-password"
-                    />
-                    <InputErrors
-                        class="mt-2 mb-1"
-                        :errors="validationErrors?.password"
-                    />
-                </div>
+            <div class="mb-6">
+                <label
+                    for="password"
+                    class="block mb-2"
+                    >New Password</label
+                >
+                <InputText
+                    id="password"
+                    type="password"
+                    v-model="form.password"
+                    class="w-full"
+                    :invalid="Boolean(validationErrors?.password)"
+                    required
+                    autocomplete="new-password"
+                />
+                <InputErrors
+                    class="mt-2 mb-1"
+                    :errors="validationErrors?.password"
+                />
+            </div>
 
-                <div class="mb-6">
-                    <label
-                        for="password_confirmation"
-                        class="block mb-2"
-                        >Confirm New Password</label
-                    >
-                    <InputText
-                        id="password_confirmation"
-                        type="password"
-                        v-model="form.password_confirmation"
-                        class="w-full"
-                        :invalid="Boolean(validationErrors?.password_confirmation)"
-                        required
-                        autocomplete="new-password"
-                    />
-                    <InputErrors
-                        class="mt-2 mb-1"
-                        :errors="validationErrors?.password_confirmation"
-                    />
-                </div>
+            <div class="mb-6">
+                <label
+                    for="password_confirmation"
+                    class="block mb-2"
+                    >Confirm New Password</label
+                >
+                <InputText
+                    id="password_confirmation"
+                    type="password"
+                    v-model="form.password_confirmation"
+                    class="w-full"
+                    :invalid="Boolean(validationErrors?.password_confirmation)"
+                    required
+                    autocomplete="new-password"
+                />
+                <InputErrors
+                    class="mt-2 mb-1"
+                    :errors="validationErrors?.password_confirmation"
+                />
+            </div>
 
-                <div class="flex justify-end items-center">
-                    <Button
-                        raised
-                        type="submit"
-                        :loading="processingFormRequest"
-                        label="Reset Password"
-                        severity="contrast"
-                    />
-                </div>
-            </form>
-        </template>
+            <div class="flex justify-end items-center">
+                <Button
+                    raised
+                    type="submit"
+                    :loading="processingFormRequest"
+                    label="Reset Password"
+                    severity="contrast"
+                />
+            </div>
+        </form>
     </NuxtLayout>
 </template>
