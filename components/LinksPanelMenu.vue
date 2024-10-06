@@ -6,16 +6,16 @@ import PanelMenu from 'primevue/panelmenu';
     <PanelMenu
         :pt="{
             root: {
-                class: 'p-0 m-0 gap-1',
+                class: '!p-0 !m-0 !gap-1',
             },
             panel: {
-                class: 'p-0 border-0',
+                class: '!p-0 !border-0',
             },
             header: {
-                class: 'p-0 border-0',
+                class: '!p-0 !border-0',
             },
             itemContent: {
-                class: 'gap-1',
+                class: '!gap-1',
             },
         }"
     >

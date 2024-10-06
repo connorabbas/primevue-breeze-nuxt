@@ -55,9 +55,11 @@ export default {
     preset: customThemePreset,
     options: {
         darkModeSelector: '.dark-mode',
-        cssLayer: {
+        // causing delayed component styling from Tailwind base (preflight) styles
+        // use ! prefix on utility classes for now for higher specificity
+        /* cssLayer: {
             name: 'primevue',
             order: 'tailwind-base, primevue, tailwind-utilities',
-        },
+        }, */
     },
 };
