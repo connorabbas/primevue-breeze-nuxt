@@ -92,10 +92,10 @@ async function logout() {
                         :model="mainMenuItems"
                         :pt="{
                             root: {
-                                class: 'px-0 py-3 border-0 rounded-none',
+                                class: '!px-0 !py-3 !border-0 !rounded-none',
                             },
                             button: {
-                                class: 'hidden',
+                                class: '!hidden',
                             },
                         }"
                     >
