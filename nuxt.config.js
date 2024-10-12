@@ -5,7 +5,7 @@ import customThemePreset from './theme-preset.js';
 export default defineNuxtConfig({
     //ssr: false,
     //target: 'static',
-    modules: ['@primevue/nuxt-module', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
+    modules: ['@nuxtjs/tailwindcss', '@primevue/nuxt-module', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
     compatibilityDate: '2024-04-03',
     devtools: { enabled: true },
     nitro: {
@@ -44,11 +44,6 @@ export default defineNuxtConfig({
         },
         autoImport: false,
     },
-    postcss: {
-        plugins: {
-            tailwindcss: {}, // TODO: https://tailwindcss.com/docs/guides/nuxtjs#modules
-            autoprefixer: {},
-        },
-    },
-    css: ['~/assets/css/app.css', 'primeicons/primeicons.css'],
+    tailwindcss: { cssPath: false, viewer: false, configPath: './tailwind.config.js' },
+    css: ['primeicons/primeicons.css', '~/assets/css/app.css'],
 });
